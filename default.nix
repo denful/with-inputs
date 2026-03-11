@@ -12,8 +12,11 @@
 #   a.inputs.b.follows = "nixpkgs";           per-sub-input follows override
 #   a = { outPath = ./a; inputs.b.follows = "x"; };  outPath + sub-input overrides
 #   a = anyValue;                             direct value (function, attrset, …)
-sources: inputs:
+sources: inputsOverrides:
 let
+  inputs =
+    if builtins.isAttrs inputsOverrides then inputsOverrides else (__functor allInputs) inputsOverrides;
+
   splitPath = s: builtins.filter builtins.isString (builtins.split "/" s);
 
   isFollows = v: builtins.isAttrs v && v ? follows;
@@ -130,9 +133,7 @@ let
   # of resolvedSources and resolvedInputs is needed or wanted.
   resolvedInputs = builtins.mapAttrs resolveInput inputs;
   allInputs = resolvedSources // resolvedInputs;
-in
-allInputs
-// {
+
   __functor =
     allInputs: outputsFn:
     let
@@ -149,4 +150,6 @@ allInputs
       };
     in
     self;
-}
+
+in
+allInputs // { inherit __functor; }

@@ -71,8 +71,8 @@ checkout or to specify flake-like follows.
     # Local checkout with sub-input overrides applied when loading its flake.nix
     someLib = { outPath = ./someLib; inputs.nixpkgs.follows = "nixpkgs"; };
 
-    # Direct import — value used as-is (function, module result, attrset, …)
-    helper = import ./helper;
+    # Direct import — value used as-is (function, module result, attrset, etc)
+    systems = import ./systems.nix;
 
     # Top-level follows: alias one input to another
     nixpkgs-stable.follows = "nixpkgs";
@@ -94,6 +94,11 @@ checkout or to specify flake-like follows.
     };
 }
 ```
+
+This second argument can also be a function `resolvedInputs -> flakeInputs`, this is
+useful for example to avoid `flake-utils` but provide a shim for
+`flake-utils.eachDefaultSystem`.
+
 
 ## `self` shape
 
