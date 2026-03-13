@@ -63,6 +63,8 @@ The second argument to `with-inputs` is an attribute set that
 can be used to drive input resolution, for example to use local
 checkout or to specify flake-like follows.
 
+See [tests.nix](./tests.nix) for usage examples.
+
 ```nix
 {
     # Local checkout — loaded as a flake if a flake.nix is present
@@ -92,6 +94,9 @@ checkout or to specify flake-like follows.
         inputs.nixpkgs.follows = "nixpkgs";
         inputs.utils.follows   = "flake-utils";
     };
+
+    # Takes the original sources.otherFlake and avoids flake call
+    otherFlake = source: source // { flake = false; };
 }
 ```
 

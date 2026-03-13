@@ -21,14 +21,18 @@ let
 
   isFollows = v: builtins.isAttrs v && v ? follows;
 
+  specKeys = [
+    "follows"
+    "inputs"
+  ];
+
   # A spec is an attrset whose only keys are "follows" and/or "inputs",
   # where every inputs.* value is itself a follows spec.
   # Anything with outPath, lib, packages, … is a direct value, not a spec.
   isSpec =
     v:
     builtins.isAttrs v
-    && (v ? follows || v ? inputs)
-    && builtins.all (k: k == "follows" || k == "inputs") (builtins.attrNames v)
+    && builtins.all (x: builtins.elem x specKeys) (builtins.attrNames v)
     && (!(v ? inputs) || builtins.all (k: isFollows v.inputs.${k}) (builtins.attrNames v.inputs));
 
   # Returns the resolved input, or null if any segment in the path is missing.
@@ -58,7 +62,9 @@ let
   # Values with outPath but no _type go through mkInput so their flake.nix is loaded.
   resolveInput =
     name: v:
-    if isFollows v then
+    if builtins.isFunction v then
+      resolveInput name (v sources.${name})
+    else if isFollows v then
       if v.follows == "" then { } else walkPath v.follows
     else if isSpec v then
       resolvedSources.${name} or { }
@@ -90,12 +96,14 @@ let
   mkInput =
     name: sourceInfo:
     let
+      isFlake = sourceInfo.flake or true;
       flakePath = sourceInfo.outPath + "/flake.nix";
+      flakeExists = sourceInfo ? outPath && builtins.pathExists flakePath;
     in
-    if sourceInfo ? outPath && builtins.pathExists flakePath then
+    if isFlake && flakeExists then
       mkFlakeInput name sourceInfo (import flakePath)
     else
-      sourceInfo;
+      sourceInfo // { inherit sourceInfo; };
 
   mkFlakeInput =
     name: sourceInfo: flake:
