@@ -1,0 +1,63 @@
+{
+  "pins": {
+    "hjem": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "feel-co",
+        "repo": "hjem"
+      },
+      "branch": "main",
+      "submodules": false,
+      "revision": "0290776d1418a475b785c1eacc91f655d11f331b",
+      "url": "https://github.com/feel-co/hjem/archive/0290776d1418a475b785c1eacc91f655d11f331b.tar.gz",
+      "hash": "sha256-SxJl+VllncXrqOv045TulgPHZSEiow7ItsA7GLcJq48="
+    },
+    "home-manager": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "home-manager"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "ef12a9a2b0f77c8fa3dda1e7e494fca668909056",
+      "url": "https://github.com/nix-community/home-manager/archive/ef12a9a2b0f77c8fa3dda1e7e494fca668909056.tar.gz",
+      "hash": "sha256-MPjR48roW7CUMU6lu0+qQGqj92Kuh3paIulMWFZy+NQ="
+    },
+    "nix-maid": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "viperml",
+        "repo": "nix-maid"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "82ff422d40d662f1fa79add1bf3049340790d71d",
+      "url": "https://github.com/viperml/nix-maid/archive/82ff422d40d662f1fa79add1bf3049340790d71d.tar.gz",
+      "hash": "sha256-Xac9AJ4ivmj48IMHsci9uEKW1LXRWpvhIy0xKB0QTzw="
+    },
+    "nixpkgs": {
+      "type": "Channel",
+      "name": "nixpkgs-unstable",
+      "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre961788.75690239f08f/nixexprs.tar.xz",
+      "hash": "sha256-p0h/nSeqzIkbn/2uFC4keoIPwmqXGHsX0gkCXM7km00="
+    },
+    "smfh": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "feel-co",
+        "repo": "smfh"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "dcc9937332ad77426fa2e8d6c5d8fed037689c69",
+      "url": "https://github.com/feel-co/smfh/archive/dcc9937332ad77426fa2e8d6c5d8fed037689c69.tar.gz",
+      "hash": "sha256-s75rkkrfle2g0/DTE0XaU9q+yTvrQHTQSrhMEPLGkIc="
+    }
+  },
+  "version": 7
+}
