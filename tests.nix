@@ -362,4 +362,30 @@ in
     expected = npins.nixpkgs.outPath;
   };
 
+  "test non flakes are not evaluated" = {
+    expr =
+      (with-inputs
+        {
+          yesFlake.outPath = ./fixtures/fake-flake;
+          nonFlake.outPath = ./fixtures/fake-flake;
+        }
+        {
+          nonFlake = source: source // { flake = false; };
+        }
+        (inputs: {
+          result.yes.hasOutputs = inputs.yesFlake ? outputs;
+          result.non.hasOutputs = inputs.nonFlake ? outputs;
+
+          result.non.sourceInfo = inputs.nonFlake.sourceInfo;
+        })
+      ).result;
+    expected = {
+      yes.hasOutputs = true;
+      non.hasOutputs = false;
+
+      non.sourceInfo.flake = false;
+      non.sourceInfo.outPath = ./fixtures/fake-flake;
+    };
+  };
+
 }
