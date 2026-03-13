@@ -7,6 +7,8 @@ let
 
   # Fake pre-resolved flake input with .inputs (simulates dependency introspection).
   mkFlake = inputs: outputs: { inherit inputs outputs; };
+
+  npins = import ./fixtures/npins;
 in
 {
   # ── Sources ────────────────────────────────────────────────────────────────
@@ -327,4 +329,37 @@ in
       (with-inputs { } { a = flakeInput; }).a.lib;
     expected = "mylib";
   };
+
+  "test npins nix-maid nixosModules output is readable" = {
+    expr =
+      (with-inputs npins { } (inputs: {
+        check = inputs ? nix-maid.nixosModules.default;
+      })).check;
+    expected = true;
+  };
+
+  "test npins home-manager nixosModules output is readable" = {
+    expr =
+      (with-inputs npins { } (inputs: {
+        check = inputs ? home-manager.nixosModules.default;
+      })).check;
+    expected = true;
+  };
+
+  "test npins hjem nixosModules output is readable" = {
+    expr =
+      (with-inputs npins { } (inputs: {
+        check = inputs ? hjem.nixosModules.default;
+      })).check;
+    expected = true;
+  };
+
+  "test npins hjem->smfh->nixpkgs dependency is followed" = {
+    expr =
+      (with-inputs npins { } (inputs: {
+        check = inputs.hjem.inputs.smfh.inputs.nixpkgs.sourceInfo.outPath;
+      })).check;
+    expected = npins.nixpkgs.outPath;
+  };
+
 }

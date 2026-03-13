@@ -87,17 +87,6 @@ let
     else
       fromAll;
 
-  canResolveSubInput =
-    hostName: subName: declaredSpec:
-    let
-      ov = overrideSubSpec hostName subName;
-      spec = if ov != null then ov else declaredSpec;
-    in
-    if isFollows spec then
-      spec.follows == "" || walkPath spec.follows != null
-    else
-      allInputs ? ${subName} && allInputs.${subName} != null;
-
   mkInput =
     name: sourceInfo:
     let
@@ -113,9 +102,8 @@ let
     let
       specs = flake.inputs or { };
       names = builtins.attrNames specs;
-      inputsOk = builtins.all (n: canResolveSubInput name n specs.${n}) names;
       inputs = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
-      outputs = if inputsOk then flake.outputs (inputs // { inherit self; }) else { };
+      outputs = flake.outputs (inputs // { inherit self; });
       self =
         sourceInfo
         // outputs
