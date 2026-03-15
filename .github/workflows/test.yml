@@ -16,7 +16,7 @@ jobs:
       - uses: wimpysworld/nothing-but-nix@main
       - uses: cachix/install-nix-action@v31
       - uses: DeterminateSystems/magic-nix-cache-action@v13
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: nix profile add nixpkgs#nix-unit nixpkgs#treefmt nixpkgs#nixfmt
       - run: nix-unit ./tests.nix
       - run: treefmt --ci
