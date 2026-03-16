@@ -102,7 +102,7 @@ See [tests.nix](./tests.nix) for usage examples.
 
 This second argument can also be a function `resolvedInputs -> flakeInputs`, this is
 useful for example to avoid `flake-utils` but provide a shim for
-`flake-utils.eachDefaultSystem`.
+`flake-utils.eachDefaultSystem` [`(example)`](https://github.com/vic/vix/blob/unflake/default.nix).
 
 
 ## `self` shape
