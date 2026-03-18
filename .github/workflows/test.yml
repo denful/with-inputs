@@ -20,4 +20,4 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v13
       - uses: actions/checkout@v6
       - run: nix-shell ./shell.nix --run 'just ci'
-      - run: nis-shell ./shell.nix --run 'treefmt --ci'
+      - run: nix-shell ./shell.nix --run 'treefmt --ci'
