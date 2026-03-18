@@ -225,6 +225,22 @@ in
     expected = "/nested-nixpkgs";
   };
 
+  # ── Indirect inputs (outputs function args not declared in inputs) ────────
+
+  indirect.test-outputs-accepts-indirect-input-override = {
+    # The flake at ./fixtures/indirect-flake has no inputs.nixpkgs declared,
+    # but its `outputs` takes a `nixpkgs` argument.
+    expr =
+      let
+        result = with-inputs {
+          nixpkgs = mkSrc "/our-nixpkgs";
+          mylib = mkSrc ./fixtures/indirect-flake;
+        } { };
+      in
+      result.mylib.usedNixpkgs.outPath;
+    expected = "/our-nixpkgs";
+  };
+
   # ── Functor / self ─────────────────────────────────────────────────────────
 
   functor-self.test-outputs-function-receives-with-inputsd-inputs = {

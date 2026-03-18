@@ -109,9 +109,11 @@ let
     name: sourceInfo: flake:
     let
       specs = flake.inputs or { };
-      names = builtins.attrNames specs;
       inputs = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
-      outputs = flake.outputs (inputs // { inherit self; });
+      indirect = builtins.mapAttrs (sub: _: resolveSubInput name sub { }) (
+        builtins.functionArgs flake.outputs
+      );
+      outputs = flake.outputs (indirect // inputs // { inherit self; });
       self =
         sourceInfo
         // outputs
