@@ -17,6 +17,5 @@ jobs:
       - uses: cachix/install-nix-action@v31
       - uses: DeterminateSystems/magic-nix-cache-action@v13
       - uses: actions/checkout@v6
-      - run: nix profile add nixpkgs#nix-unit nixpkgs#treefmt nixpkgs#nixfmt
-      - run: nix-unit ./tests.nix
-      - run: treefmt --ci
+      - run: nix-shell ./shell.nix --run 'just ci'
+      - run: nis-shell ./shell.nix --run 'treefmt --ci'
