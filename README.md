@@ -63,7 +63,7 @@ The second argument to `with-inputs` is an attribute set that
 can be used to drive input resolution, for example to use local
 checkout or to specify flake-like follows.
 
-See [tests.nix](./tests.nix) for usage examples.
+See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/vic/vix/tree/unflake/follows.nix) for usage examples.
 
 ```nix
 {
@@ -101,8 +101,7 @@ See [tests.nix](./tests.nix) for usage examples.
 ```
 
 This second argument can also be a function `resolvedInputs -> flakeInputs`, this is
-useful for example to avoid `flake-utils` but provide a shim for
-`flake-utils.eachDefaultSystem` [`(example)`](https://github.com/vic/vix/blob/unflake/default.nix).
+useful for example to shim dependencies like `systems` or  `flake-utils` [`[example]`](https://github.com/vic/vix/blob/unflake/follows.nix).
 
 
 ## `self` shape
