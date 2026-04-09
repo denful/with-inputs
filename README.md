@@ -23,6 +23,15 @@ local checkouts, or any other source.
 > This library is not an inputs lock mechanism nor an inputs fetcher, for
 > those we have plenty of options: npins, unflake, nixlock, nixtamal.
 
+## Testimonials 
+
+> Amazing! I just transitioned my main flake to using your with-inputs and npins. It cut my eval times down from 20s to 6s!  
+> -- @theutz
+
+> I am very happy to recommend this project. great work @vic!  
+> -- @aanderse
+
+
 ## Examples with different Nix pinning tools
 
 - [npins](https://github.com/vic/flake-file/blob/main/templates/npins/default.nix)
