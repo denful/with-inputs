@@ -26,10 +26,10 @@ local checkouts, or any other source.
 ## Testimonials 
 
 > Amazing! I just transitioned my main flake to using your with-inputs and npins. It cut my eval times down from 20s to 6s!  
-> -- @theutz
+> -- [@theutz](https://github.com/theutz) - [Den](https://github.com/vic/den) core contributor.
 
 > I am very happy to recommend this project. great work @vic!  
-> -- @aanderse
+> -- [@aanderse](https://github.com/aanderse) - author of [trix](https://github.com/aanderse/trix)
 
 
 ## Examples with different Nix pinning tools
