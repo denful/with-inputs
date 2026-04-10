@@ -47,7 +47,7 @@ Download our `default.nix` into your project `./with-inputs.nix`.
 curl https://raw.githubusercontent.com/vic/with-inputs/refs/heads/main/default.nix -o with-inputs.nix
 ```
 
-Or use npins or `builtins.fetchTarball` with a fixed revision of it.
+Or use npins or `builtins.fetchTarball` with a fixed revision of it. [^output-trick]
 
 ```shell
 npins add github vic with-inputs
@@ -65,6 +65,11 @@ let
 in 
 with-inputs outputs
 ```
+
+[^output-trick]: To use the experimental `nix` cli commands, create a `flake.nix` containing only
+    ```nix
+    { outputs = _: import ./.; }
+    ```
 
 ### Follows and local checkout overrides
 
