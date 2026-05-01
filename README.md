@@ -10,7 +10,7 @@
 
 # with-inputs - A flake-inputs adapter for Nix projects that don't use `flake.nix`.
 
-> with-inputs and [vic](https://bsky.app/profile/oeiuwq.bsky.social)'s [dendritic libs](https://dendritic.oeiuwq.com) made for you with Love++ and AI--. If you like my work, consider [sponsoring](https://dendritic.oeiuwq.com/sponsor)
+> with-inputs and [vic](https://bsy.app/profile/oeiuwq.bsky.social)'s [dendritic libs](https://dendritic.oeiuwq.com) made for you with Love++ and AI--. If you like my work, consider [sponsoring](https://dendritic.oeiuwq.com/sponsor)
 
 # with-inputs.nix
 
@@ -21,12 +21,28 @@ dependency introspection — using pre-fetched sources from npins,
 local checkouts, or any other source.
 
 > This library is not an inputs lock mechanism nor an inputs fetcher, for
-> those we have plenty of options: npins, unflake, nixlock, nixtamal.
+> those we have plenty of options: npins, niv, lon, unflake, nixlock, nixtamal.
+
+## API
+
+```nix
+with-inputs sources follows outputs
+```
+
+The `with-inputs` function takes three arguments:
+
+- `sources` an attrset of already fetched `<name>.outPath`.
+- `follows` a function `inputs: { ... }` for inputs follows/shims.
+- `outputs` a function `inputs: { ... }` like in flakes.
+
+with-inputs does automatic input follows -- having `x.inputs.y` will automatically lookup for a
+top-level `y` input. You only need to specify follows for uncommon input names.
+
 
 ## Testimonials 
 
 > Amazing! I just transitioned my main flake to using your with-inputs and npins. It cut my eval times down from 20s to 6s!  
-> -- [@theutz](https://github.com/theutz) - [Den](https://github.com/vic/den) core contributor.
+> -- [@theutz](https://github.com/theutz) - [Den](https://github.com/denful/den) core contributor.
 
 > I am very happy to recommend this project. great work @vic!  
 > -- [@aanderse](https://github.com/aanderse) - author of [trix](https://github.com/aanderse/trix)
@@ -34,9 +50,17 @@ local checkouts, or any other source.
 
 ## Examples with different Nix pinning tools
 
-- [npins](https://github.com/vic/flake-file/blob/main/templates/npins/default.nix)
-- [nixlock](https://github.com/vic/flake-file/blob/main/templates/nixlock/default.nix)
-- [unflake](https://github.com/vic/flake-file/blob/main/templates/unflake/default.nix)
+This repo provides several templates using different Nix pinning tools.
+
+Each template has exactly the same code, except for `with-inputs.nix` that
+is used to bootstrap from each particular pinning tool.
+
+- [npins](./templates/npins) -- Loads from `./npins`
+- [niv](./templates/niv) -- Loads from `nix/sources.nix`
+- [lon](./templates/lon) -- Loads from `lon.nix`
+- [unflake](./templates/unflake) -- Loads from `unflake.nix`
+- [nixtamal](./templates/nixtamal) -- Loads from `nix/tamal`
+- [flake](./templates/flake) -- Loads from `flake.lock`
 
 
 ## Usage

@@ -1,0 +1,9 @@
+{"v":"1.0.0"
+,"i":{
+"nixpkgs":{"kd":[1,{"ft":0,"ur":"https://github.com/NixOS/nixpkgs/archive/1c3fe55ad329cbcb28471bb30f05c9827f724c76.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-bxrdOn8SCOv8tN4JbTF/TXq7kjo9ag4M+C8yzzIRYbE="},"fv":"1c3fe55ad329cbcb28471bb30f05c9827f724c76","ps":[]}
+,"den":{"kd":[1,{"ft":0,"ur":"https://github.com/denful/den/archive/0af82e24be89b9fd400bd0b58b0fed5ea0f269ad.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-q4WXIX2E3w9Ld3MZ1Pl8Lh5SgrEFdEuzvY1Lj/Wo2kY="},"fv":"0af82e24be89b9fd400bd0b58b0fed5ea0f269ad","ps":[]}
+,"home-manager":{"kd":[1,{"ft":0,"ur":"https://github.com/nix-community/home-manager/archive/5c1b74905c7261e8280dcda3623dbe677a1bc158.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-ax3229dUvNuwTQwo2o68kOQ24dvOlJ/BrVYY4miD1bI="},"fv":"5c1b74905c7261e8280dcda3623dbe677a1bc158","ps":[]}
+,"with-inputs":{"kd":[1,{"ft":0,"ur":"https://github.com/denful/with-inputs/archive/b4cbe858b381c0ee0fe617498549f0562090ad04.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-GgKZ4LyKDS9vd946UeArhYqBKw63LdH4JqfbfFf7qNw="},"fv":"b4cbe858b381c0ee0fe617498549f0562090ad04","ps":[]}
+}
+,"p":{}
+}

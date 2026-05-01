@@ -8,5 +8,8 @@ pkgs.mkShell {
     pkgs.npins
     pkgs.treefmt
     pkgs.nixfmt
+    pkgs.niv
+    pkgs.nixtamal
+    pkgs.lon
   ];
 }

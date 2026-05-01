@@ -1,0 +1,95 @@
+{
+  "nodes": {
+    "den": {
+      "locked": {
+        "lastModified": 1776710169,
+        "narHash": "sha256-q4WXIX2E3w9Ld3MZ1Pl8Lh5SgrEFdEuzvY1Lj/Wo2kY=",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "0af82e24be89b9fd400bd0b58b0fed5ea0f269ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "den",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1777659959,
+        "narHash": "sha256-ax3229dUvNuwTQwo2o68kOQ24dvOlJ/BrVYY4miD1bI=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "5c1b74905c7261e8280dcda3623dbe677a1bc158",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1775423009,
+        "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1777548390,
+        "narHash": "sha256-WacE23EbHTsBKvr8cu+1DFNbP6Rh1brHUH5SDUI0NQI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "7aaa00e7cc9be6c316cb5f6617bd740dd435c59d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "den": "den",
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs_2",
+        "with-inputs": "with-inputs"
+      }
+    },
+    "with-inputs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775843270,
+        "narHash": "sha256-GgKZ4LyKDS9vd946UeArhYqBKw63LdH4JqfbfFf7qNw=",
+        "owner": "denful",
+        "repo": "with-inputs",
+        "rev": "b4cbe858b381c0ee0fe617498549f0562090ad04",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "with-inputs",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
