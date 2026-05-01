@@ -404,4 +404,21 @@ in
     };
   };
 
+  auto-import.test-arguments-are-auto-imported-if-paths = {
+    expr =
+      (with-inputs ./fixtures/npins ./fixtures/auto/follows.nix ./fixtures/auto/outputs.nix).result;
+    expected = [
+      "__functor"
+      "foo"
+      "hjem"
+      "home-manager"
+      "inputs"
+      "nix-maid"
+      "nixpkgs"
+      "outputs"
+      "self"
+      "smfh"
+    ];
+  };
+
 }
