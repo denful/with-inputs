@@ -96,11 +96,13 @@ let
   mkInput =
     name: sourceInfo:
     let
-      isFlake = sourceInfo.flake or true;
+      hasPath = sourceInfo ? outPath;
+      isFlake = hasPath && (sourceInfo.flake or true);
       flakePath = sourceInfo.outPath + "/flake.nix";
-      flakeExists = sourceInfo ? outPath && builtins.pathExists flakePath;
+      flakeExists = isFlake && builtins.pathExists flakePath;
+      allGood = builtins.tryEval flakeExists;
     in
-    if isFlake && flakeExists then
+    if allGood.success && allGood.value then
       mkFlakeInput name sourceInfo (import flakePath)
     else
       sourceInfo // { inherit sourceInfo; };

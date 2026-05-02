@@ -17,11 +17,12 @@ loaders:
   just loader flake
   just loader nixtamal
 
-loader name:
+loader name *args:
   cd templates/{{name}} && \
-   nix-instantiate --eval --strict --json ./. \
+   nix eval --raw --file ./. \
    --arg with-inputs '(import ../..).from.{{name}} ./.' \
-   -A nixosConfigurations.igloo.config.home-manager.users.tux.home.username
+   nixosConfigurations.igloo.config.home-manager.users.tux.home.username \
+   {{args}}
 
 fmt:
   treefmt

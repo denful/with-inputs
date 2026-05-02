@@ -10,7 +10,7 @@
 
 # with-inputs - A flake-inputs adapter for Nix projects that don't use `flake.nix`.
 
-> with-inputs and [vic](https://bsy.app/profile/oeiuwq.bsky.social)'s [dendritic libs](https://dendritic.oeiuwq.com) made for you with Love++ and AI--. If you like my work, consider [sponsoring](https://dendritic.oeiuwq.com/sponsor)
+> with-inputs and [vic](https://bsky.app/profile/oeiuwq.bsky.social)'s [dendritic libs](https://dendritic.oeiuwq.com) made for you with Love++ and AI--. If you like my work, consider [sponsoring](https://dendritic.oeiuwq.com/sponsor)
 
 # with-inputs.nix
 
@@ -31,9 +31,9 @@ with-inputs sources follows outputs
 
 The `with-inputs` function takes three arguments:
 
-- `sources` an attrset of already fetched `<name>.outPath`.
-- `follows` a function `inputs: { ... }` for inputs follows/shims.
-- `outputs` a function `inputs: { ... }` like in flakes.
+1. already fetched `<name>.outPath` attrs.
+2. a function `inputs: specs` for custom follows, input shims or sources overrides.
+3. a function `inputs: outputs` like in flakes.
 
 with-inputs does automatic input follows -- having `x.inputs.y` will automatically lookup for a
 top-level `y` input. You only need to specify follows for uncommon input names.

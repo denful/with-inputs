@@ -1,5 +1,5 @@
 {
-  pkgs ? import <nixpkgs> { },
+  pkgs ? import (import ./fixtures/npins).nixpkgs { },
 }:
 pkgs.mkShell {
   buildInputs = [
