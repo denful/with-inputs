@@ -1,0 +1,45 @@
+{
+  "version": "1",
+  "sources": {
+    "den": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "denful",
+      "repo": "den",
+      "branch": "main",
+      "revision": "0af82e24be89b9fd400bd0b58b0fed5ea0f269ad",
+      "url": "https://github.com/denful/den/archive/0af82e24be89b9fd400bd0b58b0fed5ea0f269ad.tar.gz",
+      "hash": "sha256-q4WXIX2E3w9Ld3MZ1Pl8Lh5SgrEFdEuzvY1Lj/Wo2kY="
+    },
+    "home-manager": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "home-manager",
+      "branch": "master",
+      "revision": "master",
+      "url": "https://github.com/nix-community/home-manager/archive/master.tar.gz",
+      "hash": "sha256-ax3229dUvNuwTQwo2o68kOQ24dvOlJ/BrVYY4miD1bI="
+    },
+    "nixpkgs": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nixos",
+      "repo": "nixpkgs",
+      "branch": "master",
+      "revision": "nixpkgs-unstable",
+      "url": "https://github.com/nixos/nixpkgs/archive/nixpkgs-unstable.tar.gz",
+      "hash": "sha256-WacE23EbHTsBKvr8cu+1DFNbP6Rh1brHUH5SDUI0NQI="
+    },
+    "with-inputs": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "denful",
+      "repo": "with-inputs",
+      "branch": "main",
+      "revision": "b4cbe858b381c0ee0fe617498549f0562090ad04",
+      "url": "https://github.com/denful/with-inputs/archive/b4cbe858b381c0ee0fe617498549f0562090ad04.tar.gz",
+      "hash": "sha256-GgKZ4LyKDS9vd946UeArhYqBKw63LdH4JqfbfFf7qNw="
+    }
+  }
+}

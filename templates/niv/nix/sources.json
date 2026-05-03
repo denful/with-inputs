@@ -1,0 +1,50 @@
+{
+    "den": {
+        "branch": "main",
+        "description": "Aspect-oriented, context-driven Dendritic Nix configurations. [maintainer = @vic, @sini, @HeitorAugustoLN, @Gwenodai, @theutz, @DylanRJohnston]",
+        "homepage": "https://den.oeiuwq.com/",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "0af82e24be89b9fd400bd0b58b0fed5ea0f269ad",
+        "sha256": "0insm3sqyjwdpnrlnx05n61547ifgkwx86bkfx5hzpw4glhrg1db",
+        "type": "tarball",
+        "url": "https://github.com/denful/den/archive/0af82e24be89b9fd400bd0b58b0fed5ea0f269ad.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "home-manager": {
+        "branch": "master",
+        "description": "Manage a user environment using Nix  [maintainer=@khaneliman, @rycee] ",
+        "homepage": "https://nix-community.github.io/home-manager/",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "5c1b74905c7261e8280dcda3623dbe677a1bc158",
+        "sha256": "1cnmhdlf462nmp0rz56fvghkdr4hpj7dla0c9nqdpg2lszdzc7bb",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/home-manager/archive/5c1b74905c7261e8280dcda3623dbe677a1bc158.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixpkgs-unstable",
+        "description": "Nix Packages collection & NixOS",
+        "homepage": "",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "7aaa00e7cc9be6c316cb5f6617bd740dd435c59d",
+        "sha256": "00im6i10slkya33vmmb1lhzmnlqcnppp5z7s580kn78vf7dh99sr",
+        "type": "tarball",
+        "url": "https://github.com/nixos/nixpkgs/archive/7aaa00e7cc9be6c316cb5f6617bd740dd435c59d.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "with-inputs": {
+        "branch": "main",
+        "description": "A flake-inputs adapter for Nix projects that don't use `flake.nix`.",
+        "homepage": "https://dendritic.oeiuwq.com/ecosystem/with-inputs/",
+        "owner": "denful",
+        "repo": "with-inputs",
+        "rev": "b4cbe858b381c0ee0fe617498549f0562090ad04",
+        "sha256": "1p58zdbprnx74vwd2bdp1qmq32l55gh52fnyfxpjy3capkh9j0hs",
+        "type": "tarball",
+        "url": "https://github.com/denful/with-inputs/archive/b4cbe858b381c0ee0fe617498549f0562090ad04.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

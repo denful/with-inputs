@@ -1,0 +1,1 @@
+inputs: { foo = inputs.nixpkgs; }
