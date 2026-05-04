@@ -42,6 +42,7 @@ let
         name: node:
         (flake.inputs.${name} or { })
         // {
+          path.outPath = node.locked.path;
           tarball.outPath = builtins.fetchTarball {
             url = node.locked.url;
             sha256 = node.locked.narHash;
