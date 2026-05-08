@@ -1,11 +1,11 @@
 <p align="right">
-  <a href="https://dendritic.oeiuwq.com/sponsor"><img src="https://img.shields.io/badge/sponsor-vic-white?logo=githubsponsors&logoColor=white&labelColor=%23FF0000" alt="Sponsor Vic"/>
+  <a href="https://dendritic.oeiuwq.com/sponsor"><img src="https://img.shields.io/badge/sponsor-denful-white?logo=githubsponsors&logoColor=white&labelColor=%23FF0000" alt="Sponsor Vic"/>
   </a>
-  <a href="https://github.com/vic/with-inputs/releases"><img src="https://img.shields.io/github/v/release/vic/with-inputs?style=plastic&logo=github&color=purple"/></a>
+  <a href="https://github.com/denful/with-inputs/releases"><img src="https://img.shields.io/github/v/release/denful/with-inputs?style=plastic&logo=github&color=purple"/></a>
   <a href="https://dendritic.oeiuwq.com"> <img src="https://img.shields.io/badge/Dendritic-Nix-informational?logo=nixos&logoColor=white" alt="Dendritic Nix"/> </a>
-  <a href="LICENSE"> <img src="https://img.shields.io/github/license/vic/with-inputs" alt="License"/> </a>
-  <a href="https://github.com/vic/with-inputs/actions">
-  <img src="https://github.com/vic/with-inputs/actions/workflows/test.yml/badge.svg" alt="CI Status"/> </a>
+  <a href="LICENSE"> <img src="https://img.shields.io/github/license/denful/with-inputs" alt="License"/> </a>
+  <a href="https://github.com/denful/with-inputs/actions">
+  <img src="https://github.com/denful/with-inputs/actions/workflows/test.yml/badge.svg" alt="CI Status"/> </a>
 </p>
 
 # with-inputs - A flake-inputs adapter for Nix projects that don't use `flake.nix`.
@@ -68,13 +68,13 @@ is used to bootstrap from each particular pinning tool.
 Download our `default.nix` into your project `./with-inputs.nix`.
 
 ```nix
-curl https://raw.githubusercontent.com/vic/with-inputs/refs/heads/main/default.nix -o with-inputs.nix
+curl https://raw.githubusercontent.com/denful/with-inputs/refs/heads/main/default.nix -o with-inputs.nix
 ```
 
 Or use npins or `builtins.fetchTarball` with a fixed revision of it. [^output-trick]
 
 ```shell
-npins add github vic with-inputs
+npins add github denful with-inputs
 ```
 
 ```nix
@@ -101,7 +101,7 @@ The second argument to `with-inputs` is an attribute set that
 can be used to drive input resolution, for example to use local
 checkout or to specify flake-like follows.
 
-See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/vic/vix/tree/unflake/follows.nix) for usage examples.
+See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/denful/vix/tree/unflake/follows.nix) for usage examples.
 
 ```nix
 {
