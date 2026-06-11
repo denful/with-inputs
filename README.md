@@ -61,6 +61,7 @@ is used to bootstrap from each particular pinning tool.
 - [unflake](./templates/unflake) -- Loads from `unflake.nix`
 - [nixtamal](./templates/nixtamal) -- Loads from `nix/tamal`
 - [flake](./templates/flake) -- Loads from `flake.lock`
+- [tack](./templates/tack) -- Loads from `.tack/pins.toml` + `.tack/pins.lock.json`
 
 
 ## Usage

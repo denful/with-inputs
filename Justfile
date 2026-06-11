@@ -16,6 +16,7 @@ loaders:
   just loader unflake
   just loader flake
   just loader nixtamal
+  just loader tack
 
 loader name *args:
   cd templates/{{name}} && \

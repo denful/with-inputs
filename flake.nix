@@ -21,6 +21,9 @@
 
         nixtamal.description = "nixtamal";
         nixtamal.path = ./templates/nixtamal;
+
+        tack.description = "tack";
+        tack.path = ./templates/tack;
       };
     };
 }

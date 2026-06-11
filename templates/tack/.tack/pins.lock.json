@@ -1,0 +1,34 @@
+{
+  "den": {
+    "lastModified": 1781197004,
+    "narHash": "sha256-lSaq5IFmRVySGEazhez4+IQN+KtWxNXBUukNNJqW+VU=",
+    "owner": "denful",
+    "repo": "den",
+    "rev": "fe63b4bff3358e51687b6f88fa8746d5b3dc1bd5",
+    "type": "github"
+  },
+  "home-manager": {
+    "lastModified": 1781189114,
+    "narHash": "sha256-5inaamLgUMWy+MOBE9ChF9QAF1o/74LFuHkI0W/9rqc=",
+    "owner": "nix-community",
+    "repo": "home-manager",
+    "rev": "486595d2cf49cfcd649b58a284fa11ac0e34da22",
+    "type": "github"
+  },
+  "nixpkgs": {
+    "lastModified": 1780749050,
+    "narHash": "sha256-3av0pIjlOWQ6rDbNOmpUSvbNnJkGORQKKjb4LtCZsIY=",
+    "owner": "NixOS",
+    "repo": "nixpkgs",
+    "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
+    "type": "github"
+  },
+  "with-inputs": {
+    "lastModified": 1777938927,
+    "narHash": "sha256-efneEYyUSQ7HOg/peGvfotb/P1N1+WWp10P1kMQSpe8=",
+    "owner": "denful",
+    "repo": "with-inputs",
+    "rev": "e8729bdb4afb57fc72c2a7084a77a7ee09c7e38f",
+    "type": "github"
+  }
+}
