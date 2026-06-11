@@ -1,0 +1,14 @@
+# tack pins. edit by hand or with tack add / rm / alias
+# nix reads pins.lock.json; this file drives tack update
+
+[inputs.den]
+url = "github:denful/den"
+
+[inputs.home-manager]
+url = "github:nix-community/home-manager"
+
+[inputs.nixpkgs]
+url = "github:NixOS/nixpkgs/nixos-unstable"
+
+[inputs.with-inputs]
+url = "github:denful/with-inputs"
