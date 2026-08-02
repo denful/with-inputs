@@ -32,7 +32,7 @@ with-inputs sources follows outputs
 The `with-inputs` function takes three arguments:
 
 1. already fetched `<name>.outPath` attrs.
-2. a function `inputs: specs` for custom follows, input shims or sources overrides.
+2. a `specs` attrs or function `inputs: specs` (or a list of such function/attrs) for custom follows, input shims or sources overrides.
 3. a function `inputs: outputs` like in flakes.
 
 with-inputs does automatic input follows -- having `x.inputs.y` will automatically lookup for a
@@ -72,7 +72,7 @@ Download our `default.nix` into your project `./with-inputs.nix`.
 curl https://raw.githubusercontent.com/vic/with-inputs/refs/heads/main/default.nix -o with-inputs.nix
 ```
 
-Or use npins or `builtins.fetchTarball` with a fixed revision of it. [^output-trick]
+Or use npins or `builtins.fetchTarball` with a fixed revision of it. [^output-trick] [^output-trick-2]
 
 ```shell
 npins add github vic with-inputs
@@ -90,17 +90,42 @@ let
 in 
 with-inputs outputs
 ```
+or if you want to allow overrides of inputs from a consumer project:
+```nix
+# default.nix
+{
+  inputsOverrides ? { },
+}:
+let
+   sources = import ./npins; # example with npins. use any other sources.
+   with-inputs = import sources.with-inputs sources [ {
+     # keep reading for follows and local inputs
+   } inputsOverrides ];
+
+   outputs = inputs: { }; # your flake-like outputs function
+in
+with-inputs outputs
+```
 
 [^output-trick]: To use the experimental `nix` cli commands, create a `flake.nix` containing only
     ```nix
     { outputs = _: import ./.; }
     ```
+[^output-trick-2]: To additionally allow inputs overrides (eg, by a `with-inputs`-based consummer project):
+    ```nix
+    { outputs = inputsOverrides: import ./. { inherit inputsOverrides; }
+    ```
+
+### Flake backed by non-flake pins
+When `with-inputs` detect a flake dependency which does not declare any inputs, that flake `output` function is still called with the all available inputs, so they could be used as overrides.
 
 ### Follows and local checkout overrides
 
 The second argument to `with-inputs` is an attribute set that 
 can be used to drive input resolution, for example to use local
 checkout or to specify flake-like follows.
+Alternatively that second argument can also be a function taking `inputs` and returning such an attribute set.
+It can also be a list of such functions or attribute sets (which is useful to accept overrides from consumer projects).
 
 See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/vic/vix/tree/unflake/follows.nix) for usage examples.
 

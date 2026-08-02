@@ -316,19 +316,19 @@ in
 
   # ── Dependency introspection ────────────────────────────────────────────────
 
-  introsepction.test-access-sub-flake-inputs = {
+  introspection.test-access-sub-flake-inputs = {
     # inputs.someFlake.inputs.dep — traverse a dependency's own inputs
     expr = (with-inputs { } { a = mkFlake { dep = mkSrc "/dep"; } { }; }).a.inputs.dep.outPath;
     expected = "/dep";
   };
 
-  introsepction.test-access-sub-flake-outputs = {
+  introspection.test-access-sub-flake-outputs = {
     # inputs.someFlake.outputs.lib — explicit outputs access
     expr = (with-inputs { } { a = mkFlake { } { lib = "mylib"; }; }).a.outputs.lib;
     expected = "mylib";
   };
 
-  introsepction.test-sub-flake-output-attrs-merged-at-top-level = {
+  introspection.test-sub-flake-output-attrs-merged-at-top-level = {
     # inputs.someFlake.lib ≡ inputs.someFlake.outputs.lib
     expr =
       let
@@ -344,6 +344,21 @@ in
       in
       (with-inputs { } { a = flakeInput; }).a.lib;
     expected = "mylib";
+  };
+
+  introspection.test-follow-sub-npins-with-inputs-input = {
+    # my-lib.inputs.nixpkgs.follows = "with-inputs-dep/nixpkgs" → traverse native inputs
+    expr =
+      (with-inputs
+        {
+          my-lib = mkSrc ./fixtures/fake-flake;
+          with-inputs-dep = mkSrc ./fixtures/with-inputs-flake;
+        }
+        {
+          my-lib.inputs.nixpkgs.follows = "with-inputs-dep/nixpkgs2";
+        }
+      ).my-lib.inputs.nixpkgs.outPath;
+    expected = npins.nixpkgs.outPath;
   };
 
   real-flakes.test-npins-nix-maid-nixosModules-output-is-readable = {
@@ -378,6 +393,24 @@ in
     expected = npins.nixpkgs.outPath;
   };
 
+  real-flakes.test-sub-npins-with-inputs-nested-follows = {
+    # with-inputs-dep.inputs.nixpkgs.follows = "inputs/nixpkgs" → "blind" override of with-inputs-dep.inputs.nixpkgs
+    expr =
+      (with-inputs
+        {
+          my-lib = mkFlake { nixpkgs = mkSrc "/nested-nixpkgs"; } { };
+          with-inputs-dep = mkSrc ./fixtures/with-inputs-flake;
+        }
+        {
+          with-inputs-dep.inputs.nixpkgs2.follows = "my-lib/nixpkgs";
+        }
+        (inputs: {
+          check = inputs.with-inputs-dep.usedNixpkgs;
+        })
+      ).check.outPath;
+    expected = "/nested-nixpkgs";
+  };
+
   non-flakes.test-non-flakes-are-not-evaluated = {
     expr =
       (with-inputs
@@ -409,6 +442,7 @@ in
       (with-inputs ./fixtures/npins ./fixtures/auto/follows.nix ./fixtures/auto/outputs.nix).result;
     expected = [
       "__functor"
+      "_type"
       "foo"
       "hjem"
       "home-manager"

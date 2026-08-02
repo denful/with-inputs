@@ -9,11 +9,13 @@ let
   with-inputs =
     sources: follows:
     let
-      f = import ./with-inputs.nix (may-import sources) (may-import follows);
+      f = import ./with-inputs.nix (may-import sources) (
+        if builtins.isList follows then map may-import follows else may-import follows
+      );
     in
     f
     // {
-      __functor = _: outputs: f (may-import outputs);
+      __functor = allInputs: outputs: f.__functor allInputs (may-import outputs);
     };
 
   from.niv = root: with-inputs (root + "/nix/sources.nix");
