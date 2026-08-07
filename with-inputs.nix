@@ -16,7 +16,7 @@ sources: inputsOverrides:
 let
   inputs =
     let
-      f = io: if builtins.isAttrs io then io else __functor allInputs io;
+      f = io: if builtins.isAttrs io then io else (__functor allInputs io).outputs;
     in
     if builtins.isList inputsOverrides then
       builtins.foldl' (x: y: x // (f y)) { } inputsOverrides
@@ -178,7 +178,7 @@ let
     let
       # inputs mirrors a real flake: self is included so modules can access
       # inputs.self.inputs, inputs.self.outputs, and inputs.self.outPath.
-      inputs = allInputs // {
+      inputs = removeAttrs allInputs [ "__functor" ] // {
         inherit self;
       };
       outputs = outputsFn inputs;

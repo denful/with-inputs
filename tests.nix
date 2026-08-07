@@ -441,15 +441,11 @@ in
     expr =
       (with-inputs ./fixtures/npins ./fixtures/auto/follows.nix ./fixtures/auto/outputs.nix).result;
     expected = [
-      "__functor"
-      "_type"
       "foo"
       "hjem"
       "home-manager"
-      "inputs"
       "nix-maid"
       "nixpkgs"
-      "outputs"
       "self"
       "smfh"
     ];
