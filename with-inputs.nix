@@ -4,7 +4,7 @@
 # Expects pre-fetched sources (npins, unflake, local paths, anything with .outPath).
 #
 # sources:  attrset of name -> sourceInfo (e.g. from npins)
-# inputs:   attrset mirroring the `inputs` block of a flake.nix:
+# inputsOverrides:  [list of] attrset (or inputs -> attrset) mirroring the `inputs` block of a flake.nix:
 #   someLib.outPath = ./someLib;              local checkout (loaded as flake if possible)
 #   b.follows = "a";                          alias to allInputs.a
 #   b.follows = "a/x/y";                      nested follows
@@ -15,7 +15,13 @@
 sources: inputsOverrides:
 let
   inputs =
-    if builtins.isAttrs inputsOverrides then inputsOverrides else (__functor allInputs) inputsOverrides;
+    let
+      f = io: if builtins.isAttrs io then io else (__functor allInputs io).outputs;
+    in
+    if builtins.isList inputsOverrides then
+      builtins.foldl' (x: y: x // (f y)) { } inputsOverrides
+    else
+      f inputsOverrides;
 
   splitPath = s: builtins.filter builtins.isString (builtins.split "/" s);
 
@@ -110,18 +116,51 @@ let
   mkFlakeInput =
     name: sourceInfo: flake:
     let
+      topLevelInputs = inputs;
+    in
+    let
       specs = flake.inputs or { };
-      inputs = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
+      direct = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
       indirect = builtins.mapAttrs (sub: _: resolveSubInput name sub { }) (
         builtins.functionArgs flake.outputs
       );
-      outputs = flake.outputs (indirect // inputs // { inherit self; });
+      nonEmptyInputs = direct != { } || indirect != { };
+      inputs =
+        if nonEmptyInputs then
+          indirect // direct
+        else
+          # Assume inputs are not handled by flake, but output function
+          # may still accept inputs overrides: we give it allInputs minus
+          # those that would obviously trigger infinite recursion
+          # (inputs defined as follows of inputs of the flake we are importing)
+          # plus inputs overrides declared for this flake.
+          let
+            recFollows =
+              let
+                follows =
+                  input:
+                  isFollows topLevelInputs.${input}
+                  && (
+                    let
+                      followRoot = builtins.head (builtins.split "/" topLevelInputs.${input}.follows);
+                    in
+                    followRoot == name || follows followRoot
+                  );
+              in
+              [ name ] ++ builtins.filter follows (builtins.attrNames topLevelInputs);
+          in
+          removeAttrs allInputs recFollows
+          // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (
+            topLevelInputs.${name}.inputs or { }
+          ));
+      outputs = flake.outputs (inputs // { inherit self; });
       self =
         sourceInfo
         // outputs
         // {
           _type = "flake";
-          inherit inputs outputs sourceInfo;
+          inputs = if nonEmptyInputs then inputs else outputs.inputs or { inherit self; };
+          inherit outputs sourceInfo;
         };
     in
     self;
@@ -139,14 +178,15 @@ let
     let
       # inputs mirrors a real flake: self is included so modules can access
       # inputs.self.inputs, inputs.self.outputs, and inputs.self.outPath.
-      inputs = allInputs // {
+      inputs = removeAttrs allInputs [ "__functor" ] // {
         inherit self;
       };
       outputs = outputsFn inputs;
-      # self exposes .inputs and .outputs like a real flake self, with all
+      # self exposes .inputs, .outputs and ._type like a real flake self, with all
       # output attributes merged at top level for direct attribute access.
       self = outputs // {
         inherit inputs outputs;
+        _type = "flake";
       };
     in
     self;
