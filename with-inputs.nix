@@ -16,7 +16,11 @@ sources: inputsOverrides:
 let
   inputs =
     let
-      f = io: if builtins.isAttrs io then io else (__functor allInputs io).outputs;
+      f =
+        io:
+        builtins.removeAttrs (if builtins.isAttrs io then io else (__functor allInputs io).outputs) [
+          "self"
+        ];
     in
     if builtins.isList inputsOverrides then
       builtins.foldl' (x: y: x // (f y)) { } inputsOverrides

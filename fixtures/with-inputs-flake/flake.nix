@@ -1,1 +1,1 @@
-{ outputs = inputs: import ./. { inputsOverrides = removeAttrs inputs [ "self" ]; }; }
+{ outputs = inputsOverrides: import ./. { inherit inputsOverrides; }; }
