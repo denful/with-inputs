@@ -5,10 +5,10 @@
         "homepage": "https://den.oeiuwq.com/",
         "owner": "denful",
         "repo": "den",
-        "rev": "0af82e24be89b9fd400bd0b58b0fed5ea0f269ad",
-        "sha256": "0insm3sqyjwdpnrlnx05n61547ifgkwx86bkfx5hzpw4glhrg1db",
+        "rev": "7594405b45e0ce2d5a418fe104a26e17f6b1dd8f",
+        "sha256": "1iflcv84pssva7igiwrk4ld795xc4v09y5idj68fyij7v95fni6v",
         "type": "tarball",
-        "url": "https://github.com/denful/den/archive/0af82e24be89b9fd400bd0b58b0fed5ea0f269ad.tar.gz",
+        "url": "https://github.com/denful/den/archive/7594405b45e0ce2d5a418fe104a26e17f6b1dd8f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "home-manager": {
@@ -17,10 +17,10 @@
         "homepage": "https://nix-community.github.io/home-manager/",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5c1b74905c7261e8280dcda3623dbe677a1bc158",
-        "sha256": "1cnmhdlf462nmp0rz56fvghkdr4hpj7dla0c9nqdpg2lszdzc7bb",
+        "rev": "833540099ef43cbeb28b1e3f3c21901961edb48e",
+        "sha256": "1c0m47ckd3ksxq78xmj7b539vdmzsyfpb2dircrz8yshqnxmpqk6",
         "type": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/5c1b74905c7261e8280dcda3623dbe677a1bc158.tar.gz",
+        "url": "https://github.com/nix-community/home-manager/archive/833540099ef43cbeb28b1e3f3c21901961edb48e.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -29,10 +29,10 @@
         "homepage": "",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7aaa00e7cc9be6c316cb5f6617bd740dd435c59d",
-        "sha256": "00im6i10slkya33vmmb1lhzmnlqcnppp5z7s580kn78vf7dh99sr",
+        "rev": "b6c8664de9b6cc07fe5666a29f91884ba81197c4",
+        "sha256": "0di49zmi1lhwa4wy7xa90qv1iwmch3vgfjsblbcf2j753bpnp3gb",
         "type": "tarball",
-        "url": "https://github.com/nixos/nixpkgs/archive/7aaa00e7cc9be6c316cb5f6617bd740dd435c59d.tar.gz",
+        "url": "https://github.com/nixos/nixpkgs/archive/b6c8664de9b6cc07fe5666a29f91884ba81197c4.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "with-inputs": {
@@ -41,10 +41,10 @@
         "homepage": "https://dendritic.oeiuwq.com/ecosystem/with-inputs/",
         "owner": "denful",
         "repo": "with-inputs",
-        "rev": "b4cbe858b381c0ee0fe617498549f0562090ad04",
-        "sha256": "1p58zdbprnx74vwd2bdp1qmq32l55gh52fnyfxpjy3capkh9j0hs",
+        "rev": "e1df5e3ab5b93eb77a13a981d136c9a389dacb92",
+        "sha256": "1hrsqgz7smv7ji7nlz6h1gs00r5ys9cyad6pr31d5j115rxpaps8",
         "type": "tarball",
-        "url": "https://github.com/denful/with-inputs/archive/b4cbe858b381c0ee0fe617498549f0562090ad04.tar.gz",
+        "url": "https://github.com/denful/with-inputs/archive/e1df5e3ab5b93eb77a13a981d136c9a389dacb92.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
