@@ -18,9 +18,11 @@ let
       __functor = allInputs: outputs: f.__functor allInputs (may-import outputs);
     };
 
-  from.niv = root: with-inputs (root + "/nix/sources.nix");
+  with-inputs' = root: sources: with-inputs (may-import sources // { self.outPath = root; });
 
-  from.npins = root: with-inputs (root + "/npins");
+  from.niv = root: with-inputs' root (root + "/nix/sources.nix");
+
+  from.npins = root: with-inputs' root (root + "/npins");
 
   from.lon =
     root:
@@ -28,9 +30,9 @@ let
       lon = import (root + "/lon.nix");
       sources = builtins.mapAttrs (_: outPath: { inherit outPath; }) lon;
     in
-    with-inputs sources;
+    with-inputs' root sources;
 
-  from.unflake = root: with-inputs (root + "/unflake.nix");
+  from.unflake = root: with-inputs' root (import (root + "/unflake.nix"));
 
   from.tack =
     root:
@@ -130,9 +132,9 @@ let
         ) (builtins.attrNames allFollow)
       );
     in
-    with-inputs (pinned // aliases);
+    with-inputs' root (pinned // aliases);
 
-  from.nixtamal = root: with-inputs (import (root + "/nix/tamal") { });
+  from.nixtamal = root: with-inputs' root (import (root + "/nix/tamal") { });
 
   from.flake =
     root:
@@ -156,7 +158,7 @@ let
         }
         .${node.locked.type};
     in
-    with-inputs sources;
+    with-inputs' root sources;
 
 in
 {

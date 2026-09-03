@@ -259,6 +259,14 @@ in
     expected = true;
   };
 
+  functor-self.test-outputs-function-receives-inputs-with-self-outPath = {
+    expr =
+      (with-inputs { self.outPath = ./.; } { } (inputs: {
+        selfOutPath = inputs.self.outPath;
+      })).selfOutPath;
+    expected = ./.;
+  };
+
   functor-self.test-inputs-is-the-with-inputs-attrset = {
     expr = (with-inputs { foo = mkSrc "/foo"; } { } (_: { })).inputs.foo.outPath;
     expected = "/foo";

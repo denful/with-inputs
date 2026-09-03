@@ -16,7 +16,11 @@ sources: inputsOverrides:
 let
   inputs =
     let
-      f = io: if builtins.isAttrs io then io else (__functor allInputs io).outputs;
+      f =
+        io:
+        builtins.removeAttrs (if builtins.isAttrs io then io else (__functor allInputs io).outputs) [
+          "self"
+        ];
     in
     if builtins.isList inputsOverrides then
       builtins.foldl' (x: y: x // (f y)) { } inputsOverrides
@@ -165,7 +169,8 @@ let
     in
     self;
 
-  resolvedSources = builtins.mapAttrs mkInput sources;
+  selfSources = sources.self or { };
+  resolvedSources = builtins.mapAttrs mkInput (builtins.removeAttrs sources [ "self" ]);
   # Shallow merge is correct: each key is fully resolved before this point.
   # Sub-input overrides (inputs.foo.inputs.bar.follows) are injected into
   # resolvedSources at resolution time via overrideSubSpec, so no deep merge
@@ -184,10 +189,13 @@ let
       outputs = outputsFn inputs;
       # self exposes .inputs, .outputs and ._type like a real flake self, with all
       # output attributes merged at top level for direct attribute access.
-      self = outputs // {
-        inherit inputs outputs;
-        _type = "flake";
-      };
+      self =
+        selfSources
+        // outputs
+        // {
+          inherit inputs outputs;
+          _type = "flake";
+        };
     in
     self;
 
