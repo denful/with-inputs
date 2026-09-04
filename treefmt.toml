@@ -1,3 +1,11 @@
 [formatter.nixfmt]
 command = "nixfmt"
 includes = [ "*.nix" ]
+excludes = [
+    "templates/lon/lon.nix",
+    "templates/niv/nix/sources.nix",
+    "templates/nixtamal/nix/tamal/default.nix",
+    "templates/npins/npins/default.nix",
+    "templates/tack/.tack/default.nix",
+    "templates/unflake/unflake.nix",
+]

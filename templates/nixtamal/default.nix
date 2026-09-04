@@ -1,7 +1,4 @@
 {
-  with-inputs ? import ./with-inputs.nix,
-  follows ? ./follows.nix,
-  outputs ? ./outputs.nix,
-  ...
+  inputsOverrides ? { },
 }:
-with-inputs follows outputs
+import ./with-inputs.nix [ ./follows.nix inputsOverrides ] ./outputs.nix

@@ -7,9 +7,9 @@
       "owner": "denful",
       "repo": "den",
       "branch": "main",
-      "revision": "4f15fb43dd17a5ace3680cde297e31bc7e017c91",
-      "url": "https://github.com/denful/den/archive/4f15fb43dd17a5ace3680cde297e31bc7e017c91.tar.gz",
-      "hash": "sha256-zWghnHLAo5rrOxZZXA2E5rY+aEKx/MwVQzL5eCbexJc="
+      "revision": "36c8ba5c07e2aa7d4816c6314ff2b6656293dee4",
+      "url": "https://github.com/denful/den/archive/36c8ba5c07e2aa7d4816c6314ff2b6656293dee4.tar.gz",
+      "hash": "sha256-2NVetxl+ycFWX4NZTCRqEnx4F37QajVpJe/b+n1Xw9I="
     },
     "home-manager": {
       "type": "GitHub",
@@ -17,9 +17,9 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "branch": "master",
-      "revision": "1dc2d1f720ab17fc7981e087346bf54b26d284b1",
-      "url": "https://github.com/nix-community/home-manager/archive/1dc2d1f720ab17fc7981e087346bf54b26d284b1.tar.gz",
-      "hash": "sha256-G0F2rFORVcFkEvVdE/qWQTnYekIc77YP5/vRF9nZlxU="
+      "revision": "693e8ce0fb240a73c116a03cfd7b19269c87af88",
+      "url": "https://github.com/nix-community/home-manager/archive/693e8ce0fb240a73c116a03cfd7b19269c87af88.tar.gz",
+      "hash": "sha256-Ro/e1N4ZR8/XaFF+sF9SgfPK79HM5YNEppzFj8p+0Ak="
     },
     "nixpkgs": {
       "type": "GitHub",
@@ -27,9 +27,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "master",
-      "revision": "35adf7a938f3189febd497330e2f1fe09b632a69",
-      "url": "https://github.com/nixos/nixpkgs/archive/35adf7a938f3189febd497330e2f1fe09b632a69.tar.gz",
-      "hash": "sha256-cZPb6rWoDLkSFBFVXT9iznDfWQwSRdP+YYukEVGPPFY="
+      "revision": "217ee364d167bf7ff819c7e2d1a1b8140f4afc0d",
+      "url": "https://github.com/nixos/nixpkgs/archive/217ee364d167bf7ff819c7e2d1a1b8140f4afc0d.tar.gz",
+      "hash": "sha256-5jcl+RckGopvvB0Zz1ORU2AKT39r2ncchMuXAntAxAw="
     },
     "with-inputs": {
       "type": "GitHub",
@@ -37,9 +37,9 @@
       "owner": "denful",
       "repo": "with-inputs",
       "branch": "main",
-      "revision": "dae6b8126fe613bfe12185d94d593db426a34daa",
-      "url": "https://github.com/denful/with-inputs/archive/dae6b8126fe613bfe12185d94d593db426a34daa.tar.gz",
-      "hash": "sha256-ZPGmgcJX+xBAbA0edQC59ewoH56LhAqkH1Y/5KjV9J0="
+      "revision": "f0a6bc2464d744e6e3089f89ea6efeb9427c4acd",
+      "url": "https://github.com/denful/with-inputs/archive/f0a6bc2464d744e6e3089f89ea6efeb9427c4acd.tar.gz",
+      "hash": "sha256-yFXytpx2/EzFCji5gbn819t9AcIOe5LnlFTnrIkoZ/Q="
     }
   }
 }

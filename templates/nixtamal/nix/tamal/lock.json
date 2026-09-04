@@ -1,9 +1,9 @@
-{"v":"1.0.0"
+{"v":"1.3.0"
 ,"i":{
-"nixpkgs":{"kd":[1,{"ft":0,"ur":"https://github.com/NixOS/nixpkgs/archive/1c3fe55ad329cbcb28471bb30f05c9827f724c76.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-bxrdOn8SCOv8tN4JbTF/TXq7kjo9ag4M+C8yzzIRYbE="},"fv":"1c3fe55ad329cbcb28471bb30f05c9827f724c76","ps":[]}
-,"den":{"kd":[1,{"ft":0,"ur":"https://github.com/denful/den/archive/0af82e24be89b9fd400bd0b58b0fed5ea0f269ad.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-q4WXIX2E3w9Ld3MZ1Pl8Lh5SgrEFdEuzvY1Lj/Wo2kY="},"fv":"0af82e24be89b9fd400bd0b58b0fed5ea0f269ad","ps":[]}
-,"home-manager":{"kd":[1,{"ft":0,"ur":"https://github.com/nix-community/home-manager/archive/9cb587ade2aa1b4a7257f0238d41072690b0ca4f.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-egYNbRrkn+6SwTHinhdb6WUfzzdC3nXfCRqS321VylY="},"fv":"9cb587ade2aa1b4a7257f0238d41072690b0ca4f","ps":[]}
-,"with-inputs":{"kd":[1,{"ft":0,"ur":"https://github.com/denful/with-inputs/archive/b4cbe858b381c0ee0fe617498549f0562090ad04.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-GgKZ4LyKDS9vd946UeArhYqBKw63LdH4JqfbfFf7qNw="},"fv":"b4cbe858b381c0ee0fe617498549f0562090ad04","ps":[]}
+"nixpkgs":{"sn":"nixpkgs-src","kd":[1,{"ft":0,"ur":"https://github.com/NixOS/nixpkgs/archive/3ed67ec0a4d3c7ab4ae1f04f8ee8df07bfa506a2.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-bc7rSpXIdn9QWGNqfWcPZWOhEVF8NoeAZkWq0XWnf/k="},"fv":"3ed67ec0a4d3c7ab4ae1f04f8ee8df07bfa506a2","ps":[]}
+,"den":{"sn":"den-src","kd":[1,{"ft":0,"ur":"https://github.com/denful/den/archive/36c8ba5c07e2aa7d4816c6314ff2b6656293dee4.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-2NVetxl+ycFWX4NZTCRqEnx4F37QajVpJe/b+n1Xw9I="},"fv":"36c8ba5c07e2aa7d4816c6314ff2b6656293dee4","ps":[]}
+,"home-manager":{"sn":"home-manager-src","kd":[1,{"ft":0,"ur":"https://github.com/nix-community/home-manager/archive/693e8ce0fb240a73c116a03cfd7b19269c87af88.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-Ro/e1N4ZR8/XaFF+sF9SgfPK79HM5YNEppzFj8p+0Ak="},"fv":"693e8ce0fb240a73c116a03cfd7b19269c87af88","ps":[]}
+,"with-inputs":{"sn":"with-inputs-src","kd":[1,{"ft":0,"ur":"https://github.com/denful/with-inputs/archive/f0a6bc2464d744e6e3089f89ea6efeb9427c4acd.tar.gz","ms":[]}],"ha":{"al":0,"vl":"sha256-yFXytpx2/EzFCji5gbn819t9AcIOe5LnlFTnrIkoZ/Q="},"fv":"f0a6bc2464d744e6e3089f89ea6efeb9427c4acd","ps":[]}
 }
 ,"p":{}
 }
