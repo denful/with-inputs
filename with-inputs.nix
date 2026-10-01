@@ -117,11 +117,21 @@ let
       flakePath = sourceInfo.outPath + "/flake.nix";
       flakeExists = isFlake && builtins.pathExists flakePath;
       flakeGood = builtins.tryEval flakeExists;
+
     in
-    if defaultGood.success && defaultGood.value then
+    if flakeGood.success && flakeGood.value then
+      let
+        flake = import flakePath;
+        specs = flake.inputs or { };
+        # Prefer default.nix if flake inputs specs is empty,
+        # unless in a flake evaluation context to avoid loading flake-compat (which would fail for using builtins.currentSystem)
+      in
+      if (specs == { } && builtins ? currentSystem && defaultGood.success && defaultGood.value) then
+        mkDefaultWithInputsInput name sourceInfo defaultNix
+      else
+        mkFlakeInput name sourceInfo flake
+    else if defaultGood.success && defaultGood.value then
       mkDefaultWithInputsInput name sourceInfo defaultNix
-    else if flakeGood.success && flakeGood.value then
-      mkFlakeInput name sourceInfo (import flakePath)
     else
       sourceInfo // { inherit sourceInfo; };
 
