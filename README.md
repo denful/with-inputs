@@ -106,14 +106,11 @@ let
 in
 with-inputs outputs
 ```
+Consumer projects that use `with-inputs` will automatically inject their own `inputs` as `inputsOverrides`.
 
 [^output-trick]: To use the experimental `nix` cli commands, create a `flake.nix` containing only
     ```nix
     { outputs = _: import ./.; }
-    ```
-[^output-trick-2]: To additionally allow inputs overrides (eg, by a `with-inputs`-based consummer project):
-    ```nix
-    { outputs = inputsOverrides: import ./. { inherit inputsOverrides; }
     ```
 
 ### Flake backed by non-flake pins
