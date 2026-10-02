@@ -7,41 +7,40 @@ let
       type = "github";
       owner = "denful";
       repo = "den";
-      rev = "0af82e24be89b9fd400bd0b58b0fed5ea0f269ad";
-      lastModified = 1776710169;
-      narHash = "sha256-q4WXIX2E3w9Ld3MZ1Pl8Lh5SgrEFdEuzvY1Lj/Wo2kY=";
+      rev = "7594405b45e0ce2d5a418fe104a26e17f6b1dd8f";
+      lastModified = 1790620498;
+      narHash = "sha256-20TrStpHRu+QkS0Wn8AmrJd0GiUz8/jiUVvrS9Bm1MU=";
     };
     unflake_github_denful_with-inputs = {
       type = "github";
       owner = "denful";
       repo = "with-inputs";
-      rev = "b4cbe858b381c0ee0fe617498549f0562090ad04";
-      lastModified = 1775843270;
-      narHash = "sha256-GgKZ4LyKDS9vd946UeArhYqBKw63LdH4JqfbfFf7qNw=";
+      rev = "e1df5e3ab5b93eb77a13a981d136c9a389dacb92";
+      lastModified = 1790929728;
+      narHash = "sha256-SF91ey4hyNLCyNc05VnSvmQA9AvQfGpPlGdXff7DOsM=";
     };
     unflake_github_nix-community_home-manager = {
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      rev = "5c1b74905c7261e8280dcda3623dbe677a1bc158";
-      lastModified = 1777659959;
-      narHash = "sha256-ax3229dUvNuwTQwo2o68kOQ24dvOlJ/BrVYY4miD1bI=";
-    };
-    unflake_github_nixos_nixpkgs_ref_nixos-unstable = {
-      type = "github";
-      owner = "nixos";
-      repo = "nixpkgs";
-      rev = "1c3fe55ad329cbcb28471bb30f05c9827f724c76";
-      lastModified = 1777268161;
-      narHash = "sha256-bxrdOn8SCOv8tN4JbTF/TXq7kjo9ag4M+C8yzzIRYbE=";
+      rev = "833540099ef43cbeb28b1e3f3c21901961edb48e";
+      lastModified = 1790928438;
+      narHash = "sha256-ZuJbu8VQe/Qzy7GJdZ3Xv7adRllH1o4O7nqONtkhFbA=";
     };
     unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable = {
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      rev = "7aaa00e7cc9be6c316cb5f6617bd740dd435c59d";
-      lastModified = 1777548390;
-      narHash = "sha256-WacE23EbHTsBKvr8cu+1DFNbP6Rh1brHUH5SDUI0NQI=";
+      rev = "b6c8664de9b6cc07fe5666a29f91884ba81197c4";
+      lastModified = 1790652569;
+      narHash = "sha256-641r7xrlSOHYoktL9/aArPIYNgZJ9eM5URzSEOtPJDY=";
+    };
+    unflake_tarball_https---channels-nixos-org-nixpkgs-unstable-nixexprs-tar-zst = {
+      type = "tarball";
+      url = "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1082290.b6c8664de9b6/nixexprs.tar.zst?lastModified=1790652569";
+      rev = "b6c8664de9b6cc07fe5666a29f91884ba81197c4";
+      lastModified = 1790652569;
+      narHash = "sha256-k8Fu4c9Z+4Nh7mUr0cfw++ITQiyEhlWxoJBOkI3tOcQ=";
     };
     unflake_github_denful_with-inputs_flake_false = unflake_github_denful_with-inputs;
   };
@@ -50,15 +49,14 @@ let
     unflake_github_denful_den = {
     };
     unflake_github_nix-community_home-manager = {
-      nixpkgs = "unflake_github_nixos_nixpkgs_ref_nixos-unstable";
-    };
-    unflake_github_nixos_nixpkgs_ref_nixos-unstable = {
+      nixpkgs = "unflake_tarball_https---channels-nixos-org-nixpkgs-unstable-nixexprs-tar-zst";
     };
     unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable = {
     };
+    unflake_tarball_https---channels-nixos-org-nixpkgs-unstable-nixexprs-tar-zst = {
+    };
   };
-  inject =
-    name: flake_path: subdir:
+  inject = name: flake_path: subdir:
     let
       inputs = builtins.mapAttrs (_: dep: universe.${dep}) injections.${name} // {
         inherit self;
@@ -66,33 +64,18 @@ let
       sourceInfo = deps.${name};
       outPath = "${sourceInfo.outPath}${subdir}";
       outputs = (import "${sourceInfo.outPath}/${flake_path}").outputs inputs;
-      self =
-        outputs
-        // sourceInfo
-        // {
-          inherit
-            inputs
-            outputs
-            outPath
-            sourceInfo
-            ;
-          _type = "flake";
-          _flake = true;
-        };
-    in
-    self;
+      self = outputs // sourceInfo // {
+        inherit inputs outputs outPath sourceInfo;
+        _type = "flake";
+        _flake = true;
+      };
+    in self;
   universe = rec {
     unflake_github_denful_den = inject "unflake_github_denful_den" "flake.nix" "";
     unflake_github_denful_with-inputs_flake_false = deps.unflake_github_denful_with-inputs_flake_false;
-    unflake_github_nix-community_home-manager =
-      inject "unflake_github_nix-community_home-manager" "flake.nix"
-        "";
-    unflake_github_nixos_nixpkgs_ref_nixos-unstable =
-      inject "unflake_github_nixos_nixpkgs_ref_nixos-unstable" "flake.nix"
-        "";
-    unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable =
-      inject "unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable" "flake.nix"
-        "";
+    unflake_github_nix-community_home-manager = inject "unflake_github_nix-community_home-manager" "flake.nix" "";
+    unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable = inject "unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable" "flake.nix" "";
+    unflake_tarball_https---channels-nixos-org-nixpkgs-unstable-nixexprs-tar-zst = inject "unflake_tarball_https---channels-nixos-org-nixpkgs-unstable-nixexprs-tar-zst" "flake.nix" "";
   };
   inputs = {
     den = universe.unflake_github_denful_den;
@@ -100,20 +83,12 @@ let
     nixpkgs = universe.unflake_github_nixos_nixpkgs_ref_nixpkgs-unstable;
     with-inputs = universe.unflake_github_denful_with-inputs_flake_false;
   };
-in
-inputs
-// {
-  withInputs =
-    fn:
-    let
-      outputs = fn (inputs // { inherit self; });
-      self = outputs // {
-        inherit inputs outputs;
-        _type = "flake";
-        outPath = builtins.toString ./.;
-      };
-    in
-    self;
+in inputs // {
+  withInputs = fn: let outputs = fn (inputs // { inherit self; }); self = outputs // {
+    inherit inputs outputs;
+    _type = "flake";
+    outPath = builtins.toString ./.;
+  }; in self;
   __functor = self: self.withInputs;
   self = throw "to use inputs.self, write `import ./unflake.nix (inputs: ...)`";
   _unflake = { inherit specs deps injections; };

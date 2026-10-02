@@ -11,10 +11,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.16.0",
-      "revision": "927f4d8e2be40d05c976a91bbec66238c622bbf5",
-      "url": "https://api.github.com/repos/denful/den/tarball/refs/tags/v0.16.0",
-      "hash": "sha256-RNbDvS6voiq2GalVHRt6w2EpdlEmmCjUAb6fvPO9PnE="
+      "version": "v0.19.0",
+      "revision": "37eb88ce28a9e42d5b367b967a9097030ff4f665",
+      "url": "https://api.github.com/repos/denful/den/tarball/refs/tags/v0.19.0",
+      "hash": "sha256-QTPzBJpxfetqU3u29+tQev8SlAC6EaRvHks0+FHAclY="
     },
     "home-manager": {
       "type": "Git",
@@ -25,32 +25,30 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "5c1b74905c7261e8280dcda3623dbe677a1bc158",
-      "url": "https://github.com/nix-community/home-manager/archive/5c1b74905c7261e8280dcda3623dbe677a1bc158.tar.gz",
-      "hash": "sha256-ax3229dUvNuwTQwo2o68kOQ24dvOlJ/BrVYY4miD1bI="
+      "revision": "833540099ef43cbeb28b1e3f3c21901961edb48e",
+      "url": "https://github.com/nix-community/home-manager/archive/833540099ef43cbeb28b1e3f3c21901961edb48e.tar.gz",
+      "hash": "sha256-ZuJbu8VQe/Qzy7GJdZ3Xv7adRllH1o4O7nqONtkhFbA="
     },
     "nixpkgs": {
       "type": "Channel",
       "name": "nixpkgs-unstable",
-      "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre989763.7aaa00e7cc9b/nixexprs.tar.xz",
-      "hash": "sha256-d98DFUUUUqRBs5etNBc06hg2BluQ8aIukRMBJop7nUE="
+      "artifact": "nixexprs.tar.xz",
+      "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1082290.b6c8664de9b6/nixexprs.tar.xz",
+      "hash": "sha256-k8Fu4c9Z+4Nh7mUr0cfw++ITQiyEhlWxoJBOkI3tOcQ="
     },
     "with-inputs": {
-      "type": "GitRelease",
+      "type": "Git",
       "repository": {
         "type": "GitHub",
         "owner": "denful",
         "repo": "with-inputs"
       },
-      "pre_releases": false,
-      "version_upper_bound": null,
-      "release_prefix": null,
+      "branch": "main",
       "submodules": false,
-      "version": "v0.3.0",
-      "revision": "920b35279fb800c147017c8332e04a3daa994af4",
-      "url": "https://api.github.com/repos/denful/with-inputs/tarball/refs/tags/v0.3.0",
-      "hash": "sha256-3rNFfdLJ/nivZkgBoVi+M8tJQQpupuojaHyNig1Qzrs="
+      "revision": "e1df5e3ab5b93eb77a13a981d136c9a389dacb92",
+      "url": "https://github.com/denful/with-inputs/archive/e1df5e3ab5b93eb77a13a981d136c9a389dacb92.tar.gz",
+      "hash": "sha256-SF91ey4hyNLCyNc05VnSvmQA9AvQfGpPlGdXff7DOsM="
     }
   },
-  "version": 7
+  "version": 8
 }
