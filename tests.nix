@@ -470,6 +470,79 @@ in
     expected = "/nested-nixpkgs";
   };
 
+  source-info.test-fetcher-attrs-do-not-leak-into-flake-input = {
+    # nixtamal hands over fetchgit derivations; none of their attrs belong on a flake input
+    expr =
+      let
+        foo =
+          (with-inputs {
+            foo = {
+              type = "derivation";
+              outPath = ./fixtures/fake-flake;
+              builder = "/bin/sh";
+              drvAttrs = { };
+              fetchSubmodules = false;
+              rev = "0123456789abcdef0123456789abcdef01234567";
+              narHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+            };
+          } { }).foo;
+      in
+      {
+        leaked = builtins.filter (n: foo ? ${n}) [
+          "type"
+          "builder"
+          "drvAttrs"
+          "fetchSubmodules"
+        ];
+        sourceInfo = builtins.attrNames foo.sourceInfo;
+      };
+    expected = {
+      leaked = [ ];
+      sourceInfo = [
+        "narHash"
+        "outPath"
+        "rev"
+        "shortRev"
+      ];
+    };
+  };
+
+  source-info.test-flake-input-has-flake-source-attrs = {
+    expr =
+      let
+        foo =
+          (with-inputs {
+            foo = {
+              outPath = ./fixtures/fake-flake;
+              rev = "0123456789abcdef0123456789abcdef01234567";
+              lastModified = 1700000000;
+            };
+          } { }).foo;
+      in
+      {
+        inherit (foo) rev shortRev lastModified;
+        outPath = foo.outPath;
+      };
+    expected = {
+      rev = "0123456789abcdef0123456789abcdef01234567";
+      shortRev = "0123456";
+      lastModified = 1700000000;
+      outPath = ./fixtures/fake-flake;
+    };
+  };
+
+  source-info.test-source-info-wins-over-outputs = {
+    # real flakes merge sourceInfo over outputs, as `self` already does
+    expr =
+      (with-inputs {
+        foo = {
+          outPath = ./fixtures/shadow-flake;
+          rev = "0123456789abcdef0123456789abcdef01234567";
+        };
+      } { }).foo.rev;
+    expected = "0123456789abcdef0123456789abcdef01234567";
+  };
+
   non-flakes.test-non-flakes-are-not-evaluated = {
     expr =
       (with-inputs

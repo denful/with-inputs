@@ -101,6 +101,38 @@ let
     else
       fromAll;
 
+  # The attributes a real flake's sourceInfo can carry. Fetcher results (e.g. nixtamal's fetchgit
+  # derivations) carry far more; only these may reach a flake input, as in Nix's call-flake.nix.
+  flakeSourceInfoKeys = builtins.listToAttrs (
+    map
+      (name: {
+        inherit name;
+        value = null;
+      })
+      [
+        "outPath"
+        "narHash"
+        "rev"
+        "shortRev"
+        "dirtyRev"
+        "dirtyShortRev"
+        "revCount"
+        "lastModified"
+        "lastModifiedDate"
+        "submodules"
+      ]
+  );
+
+  flakeSourceInfo =
+    sourceInfo:
+    let
+      kept = builtins.intersectAttrs flakeSourceInfoKeys sourceInfo;
+    in
+    if kept ? rev && !(kept ? shortRev) then
+      kept // { shortRev = builtins.substring 0 7 kept.rev; }
+    else
+      kept;
+
   mkInput =
     name: sourceInfo:
     let
@@ -127,11 +159,11 @@ let
         # unless in a flake evaluation context to avoid loading flake-compat (which would fail for using builtins.currentSystem)
       in
       if (specs == { } && builtins ? currentSystem && defaultGood.success && defaultGood.value) then
-        mkDefaultWithInputsInput name sourceInfo defaultNix
+        mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
       else
-        mkFlakeInput name sourceInfo flake
+        mkFlakeInput name (flakeSourceInfo sourceInfo) flake
     else if defaultGood.success && defaultGood.value then
-      mkDefaultWithInputsInput name sourceInfo defaultNix
+      mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
     else
       sourceInfo // { inherit sourceInfo; };
 
@@ -158,8 +190,8 @@ let
         // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (inputs.${name}.inputs or { }));
       outputs = defaultNix { inherit inputsOverrides; };
       self =
-        sourceInfo
-        // outputs
+        outputs
+        // sourceInfo
         // {
           _type = "flake";
           inputs = outputs.inputs or { inherit self; };
@@ -183,8 +215,8 @@ let
       inputs = indirect // direct // { inherit self; };
       outputs = flake.outputs inputs;
       self =
-        sourceInfo
-        // outputs
+        outputs
+        // sourceInfo
         // {
           _type = "flake";
           inherit outputs inputs sourceInfo;
@@ -215,10 +247,10 @@ let
       # call-flake.nix, source info is merged over outputs, so an `outPath` output cannot shadow it.
       self =
         outputs
-        // selfSources
+        // flakeSourceInfo selfSources
         // {
           inherit inputs outputs;
-          sourceInfo = selfSources;
+          sourceInfo = flakeSourceInfo selfSources;
           _type = "flake";
         };
     in
