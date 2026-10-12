@@ -210,13 +210,15 @@ let
         inherit self;
       };
       outputs = outputsFn inputs;
-      # self exposes .inputs, .outputs and ._type like a real flake self, with all
-      # output attributes merged at top level for direct attribute access.
+      # self exposes .inputs, .outputs, .sourceInfo and ._type like a real flake self, with all
+      # output attributes merged at top level for direct attribute access. As in Nix's
+      # call-flake.nix, source info is merged over outputs, so an `outPath` output cannot shadow it.
       self =
-        selfSources
-        // outputs
+        outputs
+        // selfSources
         // {
           inherit inputs outputs;
+          sourceInfo = selfSources;
           _type = "flake";
         };
     in

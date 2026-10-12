@@ -267,6 +267,42 @@ in
     expected = ./.;
   };
 
+  functor-self.test-from-npins-sets-self-outPath = {
+    expr =
+      ((with-inputs.from.npins ./fixtures) { } (inputs: {
+        inherit inputs;
+      })).inputs.self.outPath;
+    expected = ./fixtures;
+  };
+
+  functor-self.test-self-coerces-to-string-like-a-flake = {
+    expr = "${(with-inputs { self.outPath = "/root"; } { } (_: { })).inputs.self}";
+    expected = "/root";
+  };
+
+  functor-self.test-self-has-sourceInfo = {
+    expr = (with-inputs { self.outPath = "/root"; } { } (_: { })).sourceInfo.outPath;
+    expected = "/root";
+  };
+
+  functor-self.test-self-outPath-wins-over-outPath-output = {
+    # real flakes merge sourceInfo over outputs
+    expr =
+      (with-inputs { self.outPath = "/root"; } { } (_: {
+        outPath = "/output";
+      })).outPath;
+    expected = "/root";
+  };
+
+  functor-self.test-outPath-output-used-without-self-source = {
+    # the documented workaround keeps working when no self source is given
+    expr =
+      (with-inputs { } { } (_: {
+        outPath = "/output";
+      })).outPath;
+    expected = "/output";
+  };
+
   functor-self.test-inputs-is-the-with-inputs-attrset = {
     expr = (with-inputs { foo = mkSrc "/foo"; } { } (_: { })).inputs.foo.outPath;
     expected = "/foo";
