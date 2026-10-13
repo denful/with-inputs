@@ -567,9 +567,32 @@ in
       sourceInfo = [
         "outPath"
         "rev"
-        "revision"
         "shortRev"
       ];
+    };
+  };
+
+  source-info.test-loader-metadata-stays-below-outputs = {
+    # npins/niv pin data stays readable on a flake input, but never shadows its outputs
+    expr =
+      let
+        foo =
+          (with-inputs {
+            foo = {
+              outPath = ./fixtures/version-flake;
+              version = "v1.2.3";
+              branch = "main";
+              rev = "0123456789abcdef0123456789abcdef01234567";
+            };
+          } { }).foo;
+      in
+      {
+        inherit (foo) version branch rev;
+      };
+    expected = {
+      version = "from-outputs";
+      branch = "main";
+      rev = "0123456789abcdef0123456789abcdef01234567";
     };
   };
 
