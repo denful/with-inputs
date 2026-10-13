@@ -18,7 +18,17 @@ let
       __functor = allInputs: outputs: f.__functor allInputs (may-import outputs);
     };
 
-  with-inputs' = root: sources: with-inputs (may-import sources // { self.outPath = root; });
+  with-inputs' =
+    root: sources:
+    with-inputs (
+      may-import sources
+      // {
+        self =
+          root.sourceInfo or {
+            outPath = root.outPath or root;
+          };
+      }
+    );
 
   from.niv = root: with-inputs' root (root + "/nix/sources.nix");
 
