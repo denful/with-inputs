@@ -123,10 +123,17 @@ let
       ]
   );
 
+  # npins names a pin's commit `revision`. It becomes the flake `rev`, and `revision` itself is
+  # kept so code written against npins sources keeps working.
   flakeSourceInfo =
     sourceInfo:
     let
-      kept = builtins.intersectAttrs flakeSourceInfoKeys sourceInfo;
+      revision =
+        if sourceInfo ? revision && sourceInfo.revision != null then sourceInfo.revision else null;
+      kept =
+        builtins.intersectAttrs flakeSourceInfoKeys sourceInfo
+        // (if revision == null then { } else { inherit revision; })
+        // (if revision == null || sourceInfo ? rev then { } else { rev = revision; });
     in
     if kept ? rev && !(kept ? shortRev) then
       kept // { shortRev = builtins.substring 0 7 kept.rev; }
