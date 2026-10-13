@@ -123,10 +123,18 @@ let
       ]
   );
 
+  # npins names a pin's commit `revision`; a flake input exposes it as `rev`.
   flakeSourceInfo =
     sourceInfo:
     let
-      kept = builtins.intersectAttrs flakeSourceInfoKeys sourceInfo;
+      kept =
+        builtins.intersectAttrs flakeSourceInfoKeys sourceInfo
+        // (
+          if !(sourceInfo ? rev) && sourceInfo.revision or null != null then
+            { rev = sourceInfo.revision; }
+          else
+            { }
+        );
     in
     if kept ? rev && !(kept ? shortRev) then
       kept // { shortRev = builtins.substring 0 7 kept.rev; }
@@ -149,6 +157,10 @@ let
       flakePath = sourceInfo.outPath + "/flake.nix";
       flakeExists = isFlake && builtins.pathExists flakePath;
       flakeGood = builtins.tryEval flakeExists;
+      # What the loader records about a pin (npins' `version`/`url`/`hash`, niv's `owner`/`branch`,
+      # …) stays readable on the input, below its outputs and flake source info. A fetcher
+      # derivation (nixtamal) is the exception: its attributes are build internals (#16).
+      loaderMetadata = if sourceInfo.type or null == "derivation" then { } else sourceInfo;
 
     in
     if flakeGood.success && flakeGood.value then
@@ -159,11 +171,11 @@ let
         # unless in a flake evaluation context to avoid loading flake-compat (which would fail for using builtins.currentSystem)
       in
       if (specs == { } && builtins ? currentSystem && defaultGood.success && defaultGood.value) then
-        mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
+        loaderMetadata // mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
       else
-        mkFlakeInput name (flakeSourceInfo sourceInfo) flake
+        loaderMetadata // mkFlakeInput name (flakeSourceInfo sourceInfo) flake
     else if defaultGood.success && defaultGood.value then
-      mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
+      loaderMetadata // mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
     else
       sourceInfo // { inherit sourceInfo; };
 

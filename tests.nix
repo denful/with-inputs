@@ -543,6 +543,64 @@ in
     expected = "0123456789abcdef0123456789abcdef01234567";
   };
 
+  source-info.test-npins-revision-is-rev = {
+    # npins pins carry `revision`; a flake input exposes it as `rev`/`shortRev` and keeps `revision`
+    expr =
+      let
+        foo =
+          (with-inputs {
+            foo = {
+              outPath = ./fixtures/fake-flake;
+              revision = "0123456789abcdef0123456789abcdef01234567";
+              hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+            };
+          } { }).foo;
+      in
+      {
+        inherit (foo) rev shortRev revision;
+        sourceInfo = builtins.attrNames foo.sourceInfo;
+      };
+    expected = {
+      rev = "0123456789abcdef0123456789abcdef01234567";
+      shortRev = "0123456";
+      revision = "0123456789abcdef0123456789abcdef01234567";
+      sourceInfo = [
+        "outPath"
+        "rev"
+        "shortRev"
+      ];
+    };
+  };
+
+  source-info.test-loader-metadata-stays-below-outputs = {
+    # npins/niv pin data stays readable on a flake input, but never shadows its outputs
+    expr =
+      let
+        foo =
+          (with-inputs {
+            foo = {
+              outPath = ./fixtures/version-flake;
+              version = "v1.2.3";
+              branch = "main";
+              rev = "0123456789abcdef0123456789abcdef01234567";
+            };
+          } { }).foo;
+      in
+      {
+        inherit (foo) version branch rev;
+      };
+    expected = {
+      version = "from-outputs";
+      branch = "main";
+      rev = "0123456789abcdef0123456789abcdef01234567";
+    };
+  };
+
+  source-info.test-npins-fixture-git-pins-have-rev = {
+    expr = (with-inputs npins { } (inputs: inputs)).home-manager.rev;
+    expected = npins.home-manager.revision;
+  };
+
   non-flakes.test-non-flakes-are-not-evaluated = {
     expr =
       (with-inputs
