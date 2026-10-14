@@ -154,7 +154,7 @@ let
       sources = builtins.mapAttrs fetch lock.nodes;
       fetch =
         name: node:
-        (flake.inputs.${name} or { })
+        node.locked
         // {
           path.outPath = node.locked.path;
           tarball.outPath = builtins.fetchTarball {
