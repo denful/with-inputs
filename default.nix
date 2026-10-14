@@ -24,13 +24,15 @@ let
 
   from.npins = root: with-inputs' root (root + "/npins");
 
-  from.lon =
-    root:
+  from.lon' =
+    root: dir:
     let
-      lon = import (root + "/lon.nix");
+      lon = import (root + "/${dir}/lon.nix");
       sources = builtins.mapAttrs (_: outPath: { inherit outPath; }) lon;
     in
     with-inputs' root sources;
+
+  from.lon = root: from.lon' root ".";
 
   from.unflake = root: with-inputs' root (import (root + "/unflake.nix"));
 

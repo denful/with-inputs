@@ -45,6 +45,51 @@ let
     && builtins.all (x: builtins.elem x specKeys) (builtins.attrNames v)
     && (!(v ? inputs) || builtins.all (k: isFollows v.inputs.${k}) (builtins.attrNames v.inputs));
 
+  lockOf =
+    hostPath: ctx:
+    if ctx != null then
+      ctx
+    else
+      let
+        p = hostPath + "/flake.lock";
+      in
+      if builtins.pathExists p then
+        let
+          lock = builtins.fromJSON (builtins.readFile p);
+        in
+        {
+          inherit lock;
+          node = lock.root;
+        }
+      else
+        null;
+
+  fromLock =
+    hostName: hostPath: ctx: subName:
+    let
+      h = lockOf hostPath ctx;
+      nodes = h.lock.nodes;
+      resolveRef =
+        ref:
+        if ref == [ ] then
+          null
+        else if builtins.isString ref then
+          ref
+        else
+          builtins.foldl' (
+            n: seg: if n == null then null else resolveRef (nodes.${n}.inputs.${seg} or [ ])
+          ) h.lock.root ref;
+      nodeName = resolveRef (nodes.${h.node}.inputs.${subName} or [ ]);
+      node = if nodeName == null then null else nodes.${nodeName};
+    in
+    if h == null || node == null || !(node ? locked) then
+      throw "with-inputs: ${hostName}.inputs.${subName}: not in top-level pins and no usable flake.lock entry"
+    else
+      mkInputCtx {
+        lock = h.lock;
+        node = nodeName;
+      } "${hostName}/${subName}" (builtins.fetchTree node.locked // { flake = node.flake or true; });
+
   # Returns the resolved input, or null if any segment in the path is missing.
   walkPath =
     path:
@@ -82,7 +127,7 @@ let
       v;
 
   resolveSubInput =
-    hostName: subName: declaredSpec:
+    hostName: hostPath: ctx: subName: declaredSpec:
     let
       ov = overrideSubSpec hostName subName;
       spec = if ov != null then ov else declaredSpec;
@@ -93,11 +138,11 @@ let
       if spec.follows == "" then
         { }
       else if walked == null then
-        { }
+        throw "with-inputs: ${hostName}.inputs.${subName}: follows '${spec.follows}' not found"
       else
         walked
     else if fromAll == null then
-      { }
+      fromLock hostName hostPath ctx subName
     else
       fromAll;
 
@@ -141,8 +186,10 @@ let
     else
       kept;
 
-  mkInput =
-    name: sourceInfo:
+  mkInput = mkInputCtx null;
+
+  mkInputCtx =
+    ctx: name: sourceInfo:
     let
       hasPath = sourceInfo ? outPath;
       isFlake = hasPath && (sourceInfo.flake or true);
@@ -171,16 +218,16 @@ let
         # unless in a flake evaluation context to avoid loading flake-compat (which would fail for using builtins.currentSystem)
       in
       if (specs == { } && builtins ? currentSystem && defaultGood.success && defaultGood.value) then
-        loaderMetadata // mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
+        loaderMetadata // mkDefaultWithInputsInput ctx name (flakeSourceInfo sourceInfo) defaultNix
       else
-        loaderMetadata // mkFlakeInput name (flakeSourceInfo sourceInfo) flake
+        loaderMetadata // mkFlakeInput ctx name (flakeSourceInfo sourceInfo) flake
     else if defaultGood.success && defaultGood.value then
       loaderMetadata // mkDefaultWithInputsInput name (flakeSourceInfo sourceInfo) defaultNix
     else
       sourceInfo // { inherit sourceInfo; };
 
   mkDefaultWithInputsInput =
-    name: sourceInfo: defaultNix:
+    ctx: name: sourceInfo: defaultNix:
     let
       inputsOverrides =
         let
@@ -199,7 +246,9 @@ let
             [ name ] ++ builtins.filter follows (builtins.attrNames inputs);
         in
         removeAttrs allInputs recFollows
-        // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (inputs.${name}.inputs or { }));
+        // (builtins.mapAttrs (sub: spec: resolveSubInput name sourceInfo.outPath ctx sub spec) (
+          inputs.${name}.inputs or { }
+        ));
       outputs = defaultNix { inherit inputsOverrides; };
       self =
         outputs
@@ -213,14 +262,14 @@ let
     self;
 
   mkFlakeInput =
-    name: sourceInfo: flake:
+    ctx: name: sourceInfo: flake:
     let
       topLevelInputs = inputs;
     in
     let
       specs = flake.inputs or { };
-      direct = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
-      indirect = builtins.mapAttrs (sub: _: resolveSubInput name sub { }) (
+      direct = builtins.mapAttrs (sub: spec: resolveSubInput name sourceInfo.outPath ctx sub spec) specs;
+      indirect = builtins.mapAttrs (sub: _: resolveSubInput name sourceInfo.outPath ctx sub { }) (
         builtins.functionArgs flake.outputs
       );
       nonEmptyInputs = direct != { } || indirect != { };
