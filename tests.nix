@@ -316,7 +316,8 @@ in
         (inputs: {
           result =
             inputs.nixpkgs-hm.outPath == inputs.nixpkgs-hm-from-outPath.outPath
-            && inputs.nixpkgs-hm.outPath != inputs.hm.outPath;
+            && inputs.nixpkgs-hm.outPath != inputs.hm.outPath
+            && inputs.nixpkgs-hm.sourceInfo.outPath != inputs.hm.outPath;
         })
       ).result;
     expected = true;
