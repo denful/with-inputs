@@ -149,11 +149,12 @@ let
     root:
     let
       lock = builtins.fromJSON (builtins.readFile (root + "/flake.lock"));
-      flake = import (root + "/flake.nix");
-      sources = builtins.mapAttrs fetch lock.nodes;
+
+      fetchedNodes = builtins.mapAttrs fetch lock.nodes;
       fetch =
         name: node:
-        (flake.inputs.${name} or { })
+        node.locked
+        // (if node ? flake then { inherit (node) flake; } else { })
         // {
           path.outPath = node.locked.path;
           tarball.outPath = builtins.fetchTarball {
@@ -166,6 +167,28 @@ let
           };
         }
         .${node.locked.type};
+
+      # Resolve a input spec into a node name. An input spec is
+      # either a node name, or a 'follows' path from the root
+      # node. Credit: https://github.com/NixOS/flake-compat
+      resolveInput =
+        inputSpec: if builtins.isList inputSpec then getInputByPath lock.root inputSpec else inputSpec;
+
+      # Follow an input path (e.g. ["dwarffs" "nixpkgs"]) from the
+      # root node, returning the final node. Credit: https://github.com/NixOS/flake-compat
+      getInputByPath =
+        nodeName: path:
+        if path == [ ] then
+          nodeName
+        else
+          getInputByPath
+            # Since this could be a 'follows' input, call resolveInput.
+            (resolveInput lock.nodes.${nodeName}.inputs.${builtins.head path})
+            (builtins.tail path);
+
+      sources = builtins.mapAttrs (
+        _: input: fetchedNodes.${resolveInput input}
+      ) lock.nodes.${lock.root}.inputs;
     in
     with-inputs' root sources;
 
