@@ -669,4 +669,36 @@ in
     ];
   };
 
+  # ── lon ─────────────────────────────────────────────────────────────────────
+
+  lon.test-from-lon-sources-outPath-preserved = {
+    expr = (with-inputs.from.lon ./fixtures/lon { }).foo.outPath;
+    expected = "/foo";
+  };
+
+  lon.test-from-lon-multiple-sources = {
+    expr = (with-inputs.from.lon ./fixtures/lon { }).bar.outPath;
+    expected = "/bar";
+  };
+
+  lon.test-from-lon-sets-self-outPath = {
+    expr = ((with-inputs.from.lon ./fixtures/lon) { } (_: { })).inputs.self.outPath;
+    expected = ./fixtures/lon;
+  };
+
+  lon.test-from-lon-follows-wired = {
+    expr = (with-inputs.from.lon ./fixtures/lon { bar.follows = "foo"; }).bar.outPath;
+    expected = "/foo";
+  };
+
+  lon.test-from-lon'-subdir = {
+    expr = (with-inputs.from.lon' ./fixtures/lon "nix" { }).foo.outPath;
+    expected = "/sub/foo";
+  };
+
+  lon.test-from-lon'-subdir-sets-self-outPath = {
+    expr = ((with-inputs.from.lon' ./fixtures/lon "nix") { } (_: { })).inputs.self.outPath;
+    expected = ./fixtures/lon;
+  };
+
 }
