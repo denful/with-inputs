@@ -262,10 +262,10 @@ let
         _type = "flake";
       };
       # inputs.self is the flake as its own modules see it: source info wins, as in call-flake.nix.
-      self = outputs // flakeSourceInfo selfSources // selfAttrs;
+      self = outputs // selfAttrs.sourceInfo // selfAttrs;
     in
-    # The value handed back to the caller lets outputs win, so returning another input keeps its outPath.
-    flakeSourceInfo selfSources // outputs // selfAttrs;
+    # The value handed back to the caller lets outputs win, so returning another input keeps its outPath and sourceInfo.
+    selfAttrs.sourceInfo // selfAttrs // outputs;
 
 in
 allInputs // { inherit __functor; }
