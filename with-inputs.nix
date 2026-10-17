@@ -45,6 +45,8 @@ let
     && builtins.all (x: builtins.elem x specKeys) (builtins.attrNames v)
     && (!(v ? inputs) || builtins.all (k: isFollows v.inputs.${k}) (builtins.attrNames v.inputs));
 
+  isValue = v: builtins.isAttrs v && builtins.attrNames v == [ "value" ];
+
   # Returns the resolved input, or null if any segment in the path is missing.
   walkPath =
     path:
@@ -78,6 +80,8 @@ let
       resolvedSources.${name} or { }
     else if v ? outPath && !(v ? _type) then
       mkInput name v
+    else if isValue v then
+      v.value
     else
       v;
 
@@ -198,9 +202,19 @@ let
             in
             [ name ] ++ builtins.filter follows (builtins.attrNames inputs);
         in
-        removeAttrs allInputs recFollows
-        // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (inputs.${name}.inputs or { }));
-      outputs = defaultNix { inherit inputsOverrides; };
+        builtins.mapAttrs
+          (
+            _: value:
+            # We push overrides under "value" so that they are not evaluated eagerly when they are them-selves
+            # passed further down the dependency tree (which could trigger stackoverflows in complex cases)
+            { inherit value; })
+          (
+            removeAttrs allInputs recFollows
+            // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (inputs.${name}.inputs or { }))
+          );
+      outputs = defaultNix {
+        inherit inputsOverrides;
+      };
       self =
         outputs
         // sourceInfo
