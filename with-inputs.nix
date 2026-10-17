@@ -198,9 +198,21 @@ let
             in
             [ name ] ++ builtins.filter follows (builtins.attrNames inputs);
         in
-        removeAttrs allInputs recFollows
-        // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (inputs.${name}.inputs or { }));
-      outputs = defaultNix { inherit inputsOverrides; };
+        builtins.mapAttrs
+          (
+            _: value:
+            # We wrap overrides in a function so that they are not evaluated eagerly (due to recFollows pruning)
+            # when they are them-selves passed further down the dependency tree
+            # (which could trigger stackoverflows in complex cases).
+            (_: value)
+          )
+          (
+            removeAttrs allInputs recFollows
+            // (builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) (inputs.${name}.inputs or { }))
+          );
+      outputs = defaultNix {
+        inherit inputsOverrides;
+      };
       self =
         outputs
         // sourceInfo
