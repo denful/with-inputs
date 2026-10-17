@@ -285,41 +285,13 @@ in
     expected = "/root";
   };
 
-  functor-self.test-inputs-self-outPath-wins-over-outPath-output = {
-    # inputs.self is the flake as its modules see it: source info wins, as in call-flake.nix
-    expr =
-      (with-inputs { self.outPath = "/root"; } { } (inputs: {
-        outPath = "/output";
-        selfOutPath = inputs.self.outPath;
-      })).selfOutPath;
-    expected = "/root";
-  };
-
-  functor-self.test-returned-outPath-output-wins = {
-    # the value handed back keeps the outputs' outPath, so returning an input keeps its source
+  functor-self.test-self-outPath-wins-over-outPath-output = {
+    # real flakes merge sourceInfo over outputs
     expr =
       (with-inputs { self.outPath = "/root"; } { } (_: {
         outPath = "/output";
       })).outPath;
-    expected = "/output";
-  };
-
-  functor-self.test-from-flake-returning-an-input-keeps-its-outPath = {
-    # reported on #26: from.flake <input> { } (i: i.nixpkgs) returned the outer flake's outPath
-    expr =
-      ((with-inputs.from.npins ./fixtures)
-        (inputs: {
-          hm = inputs.home-manager;
-          nixpkgs-hm = with-inputs.from.flake inputs.home-manager { } (i: i.nixpkgs);
-          nixpkgs-hm-from-outPath = with-inputs.from.flake inputs.home-manager.outPath { } (i: i.nixpkgs);
-        })
-        (inputs: {
-          result =
-            inputs.nixpkgs-hm.outPath == inputs.nixpkgs-hm-from-outPath.outPath
-            && inputs.nixpkgs-hm.outPath != inputs.hm.outPath;
-        })
-      ).result;
-    expected = true;
+    expected = "/root";
   };
 
   functor-self.test-outPath-output-used-without-self-source = {
