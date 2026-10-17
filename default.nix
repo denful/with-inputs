@@ -9,7 +9,7 @@ let
   with-inputs =
     sources: follows:
     let
-      f = import ./with-inputs.nix (may-import sources) (
+      f = import ./with-inputs.nix (builtins.removeAttrs (may-import sources) [ "__functor" ]) (
         if builtins.isList follows then map may-import follows else may-import follows
       );
     in
