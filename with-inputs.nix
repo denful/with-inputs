@@ -215,15 +215,11 @@ let
   mkFlakeInput =
     name: sourceInfo: flake:
     let
-      topLevelInputs = inputs;
-    in
-    let
       specs = flake.inputs or { };
       direct = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
       indirect = builtins.mapAttrs (sub: _: resolveSubInput name sub { }) (
         builtins.functionArgs flake.outputs
       );
-      nonEmptyInputs = direct != { } || indirect != { };
       inputs = indirect // direct // { inherit self; };
       outputs = flake.outputs inputs;
       self =
