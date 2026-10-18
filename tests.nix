@@ -402,6 +402,23 @@ in
     expected = "/bar/bar";
   };
 
+  input-overrides.test-complex-cross-overrides = {
+    expr =
+      ((with-inputs.from.npins ./fixtures)
+        {
+          nixpkgs = mkSrc "/our-nixpkgs";
+          nixpkgs3.follows = "test3/nixpkgs3";
+          common-dep.follows = "test2/common-dep";
+          test2.outPath = ./fixtures/with-inputs-project2;
+          test3.outPath = ./fixtures/with-inputs-project3;
+        }
+        (inputs: {
+          res = inputs.test3.usedNixpkgs;
+        })
+      ).res.outPath;
+    expected = "/our-nixpkgs";
+  };
+
   # ── Dependency introspection ────────────────────────────────────────────────
 
   introspection.test-access-sub-flake-inputs = {
