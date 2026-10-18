@@ -227,15 +227,11 @@ let
   mkFlakeInput =
     name: sourceInfo: flake:
     let
-      topLevelInputs = inputs;
-    in
-    let
       specs = flake.inputs or { };
       direct = builtins.mapAttrs (sub: spec: resolveSubInput name sub spec) specs;
       indirect = builtins.mapAttrs (sub: _: resolveSubInput name sub { }) (
         builtins.functionArgs flake.outputs
       );
-      nonEmptyInputs = direct != { } || indirect != { };
       inputs = indirect // direct // { inherit self; };
       outputs = flake.outputs inputs;
       self =
@@ -267,17 +263,18 @@ let
       };
       outputs = outputsFn inputs;
       # self exposes .inputs, .outputs, .sourceInfo and ._type like a real flake self, with all
-      # output attributes merged at top level for direct attribute access.
-      selfAttrs = {
-        inherit inputs outputs;
-        sourceInfo = flakeSourceInfo selfSources;
-        _type = "flake";
-      };
-      # inputs.self is the flake as its own modules see it: source info wins, as in call-flake.nix.
-      self = outputs // flakeSourceInfo selfSources // selfAttrs;
+      # output attributes merged at top level for direct attribute access. As in Nix's
+      # call-flake.nix, source info is merged over outputs, so an `outPath` output cannot shadow it.
+      self =
+        outputs
+        // flakeSourceInfo selfSources
+        // {
+          inherit inputs outputs;
+          sourceInfo = flakeSourceInfo selfSources;
+          _type = "flake";
+        };
     in
-    # The value handed back to the caller lets outputs win, so returning another input keeps its outPath.
-    flakeSourceInfo selfSources // outputs // selfAttrs;
+    self;
 
 in
 allInputs // { inherit __functor; }

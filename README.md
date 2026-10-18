@@ -113,9 +113,6 @@ Consumer projects that use `with-inputs` will automatically inject their own `in
     { outputs = _: import ./.; }
     ```
 
-### Flake backed by non-flake pins
-When `with-inputs` detect a flake dependency which does not declare any inputs, that flake `output` function is still called with the all available inputs, so they could be used as overrides.
-
 ### Follows and local checkout overrides
 
 The second argument to `with-inputs` is an attribute set that 
@@ -162,7 +159,16 @@ See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/denful
 ```
 
 This second argument can also be a function `resolvedInputs -> flakeInputs`, this is
-useful for example to shim dependencies like `systems` or  `flake-utils` [`[example]`](https://github.com/vic/vix/blob/unflake/follows.nix).
+useful for example to shim dependencies like `systems` or  `flake-utils` [`[example]`](https://github.com/vic/vix/blob/unflake/follows.nix),
+or load them from another input, eg., to use `nixpkgs` from `home-manager` flake:
+
+```nix
+inputs: {
+    inherit (inputs.with-inputs.from.flake inputs.home-manager {}) nixpkgs;
+    # DO NOT (this would result in nixpkgs inheriting sourceInfo from home-manager):
+    # nixpkgs = inputs.with-inputs.from.flake inputs.home-manager {} (i: i.nixpkgs)
+}
+```
 
 
 ## `self` shape
