@@ -363,6 +363,22 @@ in
     expected = true;
   };
 
+  functor-self.test-from-flake-get-inputs-right =
+    let
+      flakeInputs = (with-inputs.from.flake ./fixtures/real-flake) (inputs: {
+        nixpkgs-hm2 = (with-inputs.from.flake inputs.home-manager { }).nixpkgs;
+        home-manager.inputs.nixpkgs.follows = "nixpkgs-hm2";
+      });
+    in
+    {
+      expr =
+        flakeInputs.nixpkgs.outPath != flakeInputs.home-manager.inputs.nixpkgs.outPath
+        && flakeInputs.nixpkgs-hm2.outPath == flakeInputs.nixpkgs-hm.outPath
+        && flakeInputs.nixpkgs-hm.outPath == flakeInputs.home-manager.inputs.nixpkgs.outPath;
+
+      expected = true;
+    };
+
   # ── Input Overrides Function ────────────────────────────────────────────────
   input-overrides.test-input-function-overrides-foo = {
     expr =
