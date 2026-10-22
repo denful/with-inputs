@@ -193,7 +193,7 @@ let
                   let
                     followRoot = builtins.head (builtins.split "/" inputs.${input}.follows);
                   in
-                  followRoot == name || follows followRoot
+                  followRoot == name || (inputs ? ${followRoot} && follows followRoot)
                 );
             in
             [ name ] ++ builtins.filter follows (builtins.attrNames inputs);
