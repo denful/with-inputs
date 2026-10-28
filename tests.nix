@@ -376,12 +376,34 @@ in
 
   input-overrides.test-complex-cross-overrides = {
     expr =
-      ((with-inputs.from.npins ./fixtures)
+      (with-inputs.from.npins ./fixtures
         {
           nixpkgs = mkSrc "/our-nixpkgs";
           nixpkgs3.follows = "test3/nixpkgs3";
           common-dep.follows = "test2/common-dep";
           test2.outPath = ./fixtures/with-inputs-project2;
+          test3.outPath = ./fixtures/with-inputs-project3;
+        }
+        (inputs: {
+          res = inputs.test3.usedNixpkgs;
+        })
+      ).res.outPath;
+    expected = "/our-nixpkgs";
+  };
+
+  input-overrides.test-complex-cross-overrides-variant = {
+    expr =
+      (with-inputs
+        (
+          import ./fixtures/npins
+          // {
+            test2.outPath = ./fixtures/with-inputs-project2;
+          }
+        )
+        {
+          nixpkgs = mkSrc "/our-nixpkgs";
+          nixpkgs3.follows = "test3/nixpkgs3";
+          common-dep.follows = "test2/common-dep";
           test3.outPath = ./fixtures/with-inputs-project3;
         }
         (inputs: {
