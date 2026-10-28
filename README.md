@@ -121,7 +121,7 @@ checkout or to specify flake-like follows.
 Alternatively that second argument can also be a function taking `inputs` and returning such an attribute set.
 It can also be a list of such functions or attribute sets (which is useful to accept overrides from consumer projects).
 
-See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/denful/vix/tree/unflake/follows.nix) for usage examples.
+See [tests.nix](./tests.nix) and [vic/vix:follows.nix](https://github.com/vic/vix/blob/unflake/follows.nix) for usage examples.
 
 ```nix
 {
