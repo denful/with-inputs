@@ -186,17 +186,29 @@ let
         let
           recFollows =
             let
+              # `seen`: the inputs already on this chain, so a follows cycle is refused by name, not a stack overflow.
               follows =
-                input:
+                seen: input:
                 isFollows inputs.${input}
                 && (
                   let
                     followRoot = builtins.head (builtins.split "/" inputs.${input}.follows);
+                    chain = seen ++ [ input ];
+                    cycle = builtins.concatStringsSep " -> " (chain ++ [ followRoot ]);
                   in
-                  followRoot == name || (inputs ? ${followRoot} && follows followRoot)
+                  followRoot == name
+                  || (
+                    inputs ? ${followRoot}
+                    && (
+                      if builtins.elem followRoot chain then
+                        throw "with-inputs: follows cycle: ${cycle}"
+                      else
+                        follows chain followRoot
+                    )
+                  )
                 );
             in
-            [ name ] ++ builtins.filter follows (builtins.attrNames inputs);
+            [ name ] ++ builtins.filter (follows [ ]) (builtins.attrNames inputs);
         in
         builtins.mapAttrs
           (
