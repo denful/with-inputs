@@ -413,6 +413,29 @@ in
     expected = "/our-nixpkgs";
   };
 
+  input-overrides.test-follows-cycle-is-refused = {
+    expr =
+      (with-inputs
+        (
+          import ./fixtures/npins
+          // {
+            test2.outPath = ./fixtures/with-inputs-project2;
+          }
+        )
+        {
+          nixpkgs = mkSrc "/our-nixpkgs";
+          nixpkgs3.follows = "common-dep/x";
+          common-dep.follows = "nixpkgs3/y";
+          test3.outPath = ./fixtures/with-inputs-project3;
+        }
+        (inputs: {
+          res = inputs.test3.usedNixpkgs;
+        })
+      ).res.outPath;
+    expectedError.type = "ThrownError";
+    expectedError.msg = "follows cycle";
+  };
+
   # ── Dependency introspection ────────────────────────────────────────────────
 
   introspection.test-access-sub-flake-inputs = {
