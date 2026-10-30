@@ -37,7 +37,10 @@ let
     root:
     let
       lon = import (root + "/lon.nix");
-      sources = builtins.mapAttrs (_: outPath: { inherit outPath; }) lon;
+      lonLockSources = (builtins.fromJSON (builtins.readFile (root + "/lon.lock"))).sources or { };
+      sources = builtins.mapAttrs (
+        name: outPath: (lonLockSources.${name} or { }) // { inherit outPath; }
+      ) lon;
     in
     with-inputs' root sources;
 
